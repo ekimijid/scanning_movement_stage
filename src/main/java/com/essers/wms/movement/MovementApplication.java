@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@Theme("my-theme")
-@PWA(name = "Scanner WMS", shortName = "WMS")
+@PWA(name = "Scanner WMS", shortName = "WMS", offlinePath="offline.html",
+        offlineResources = { "./images/offline.png"} )
 public class MovementApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
     public static void main(String[] args) {

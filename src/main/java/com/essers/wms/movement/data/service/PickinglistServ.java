@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface PickinglistServ {
     List<Pickinglist> getAll();
-    Pickinglist getById(UUID Id);
+    Pickinglist getById(Long Id);
 }

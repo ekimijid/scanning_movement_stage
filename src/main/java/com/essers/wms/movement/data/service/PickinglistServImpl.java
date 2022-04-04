@@ -19,7 +19,7 @@ public class PickinglistServImpl implements PickinglistServ{
     }
 
     @Override
-    public Pickinglist getById(UUID Id) {
+    public Pickinglist getById(Long Id) {
         return pickinglistRepo.getById(Id);
     }
 }

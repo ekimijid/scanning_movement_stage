@@ -23,7 +23,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
         login.setAction("login");
 
-        add(new H1("Scanner "), login);
+        add(new H1("ScannerWMS "), login);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.essers.wms.movement.data.repo.*;
 import com.vaadin.exampledata.DataType;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
+import liquibase.pro.packaged.r;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,9 @@ import org.springframework.context.annotation.Bean;
 import com.vaadin.exampledata.ExampleDataGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringComponent
@@ -26,7 +26,7 @@ public class DataGenerator {
 
     @Bean
     public CommandLineRunner loadData(MovementRepo movementRepo, PickinglistRepo pickinglistRepo,
-                                      StockRepo stockRepo, UserRepository userRepository, RoleRepo roleRepo) {
+                                      StockRepo stockRepo, UserRepository userRepository, RoleRepo roleRepo, ProductRepo productRepo) {
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
             if (pickinglistRepo.count() != 0L) {
@@ -36,69 +36,6 @@ public class DataGenerator {
             int seed = 123;
             logger.info("Generating demo data");
 
-            ExampleDataGenerator<Movement> movementExampleDataGenerator = new ExampleDataGenerator<>(Movement.class,
-                    LocalDateTime.now());
-            movementExampleDataGenerator.setData(Movement::setMovement_ID, DataType.UUID);
-            movementExampleDataGenerator.setData(Movement::setWms_company, DataType.COMPANY_NAME);
-            movementExampleDataGenerator.setData(Movement::setMovement_type, DataType.TWO_WORDS);
-            movementExampleDataGenerator.setData(Movement::setQuantity, DataType.NUMBER_UP_TO_100);
-            movementExampleDataGenerator.setData(Movement::setProduct_ID,DataType.FOOD_PRODUCT_EAN);
-            movementExampleDataGenerator.setData(Movement::setUom, DataType.TWO_WORDS);
-            movementExampleDataGenerator.setData(Movement::setIn_progress_timestamp, DataType.DATE_LAST_7_DAYS );
-            movementExampleDataGenerator.setData(Movement::setWms_site, DataType.COMPANY_NAME);
-            movementExampleDataGenerator.setData(Movement::setIn_progress_user, DataType.FIRST_NAME);
-            movementExampleDataGenerator.setData(Movement::setLocation_from, DataType.TWO_WORDS);
-            movementExampleDataGenerator.setData(Movement::setLocation_to, DataType.TWO_WORDS);
-            movementExampleDataGenerator.setData(Movement::setPriority, DataType.TWO_WORDS);
-            movementExampleDataGenerator.setData(Movement::setSupplier_ID, DataType.TWO_WORDS);
-            movementExampleDataGenerator.setData(Movement::setWms_warehouse, DataType.COMPANY_NAME);
-
-
-            ExampleDataGenerator<Stock> stockExampleDataGenerator = new ExampleDataGenerator<>(Stock.class,
-                    LocalDateTime.now());
-            stockExampleDataGenerator.setData(Stock::setStock_ID, DataType.UUID);
-            stockExampleDataGenerator.setData(Stock::setLocation, DataType.TWO_WORDS);
-            stockExampleDataGenerator.setData(Stock::setProduct_ID, DataType.TWO_WORDS);
-            stockExampleDataGenerator.setData(Stock::setQuantity, DataType.NUMBER_UP_TO_100);
-
-
-           stockRepo.saveAll(stockExampleDataGenerator.create(10, seed));
-            List<Stock> stockList =stockRepo.findAll();
-
-
-            ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class,
-                    LocalDateTime.now());
-            pickinglistGenerator.setData(Pickinglist::setWms_company, DataType.COMPANY_NAME );
-            pickinglistGenerator.setData(Pickinglist::setWms_site, DataType.COMPANY_NAME );
-            pickinglistGenerator.setData(Pickinglist::setProduct_ID, DataType.FOOD_PRODUCT_EAN );
-            pickinglistGenerator.setData(Pickinglist::setLocation, DataType.ADDRESS );
-            pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_100 );
-            pickinglistGenerator.setData(Pickinglist::setPicking_list_ID, DataType.UUID );
-            pickinglistGenerator.setData(Pickinglist::setSupplier_ID, DataType.FOOD_PRODUCT_EAN );
-            pickinglistGenerator.setData(Pickinglist::setUom, DataType.NUMBER_UP_TO_10 );
-            pickinglistGenerator.setData(Pickinglist::setWms_warehouse, DataType.COMPANY_NAME );
-
-            List<Pickinglist> pickinglists =(pickinglistGenerator.create(10, seed));
-            pickinglistRepo.saveAll(pickinglists);
-            Random r = new Random(seed);
-            List<Movement> movements= movementRepo.saveAll(movementExampleDataGenerator.create(10, seed).stream().map(movement -> {
-                movement.setStock(stockList.get(r.nextInt(stockList.size())));
-                movement.setPickinglist(pickinglists.get(r.nextInt(pickinglists.size())));
-                return movement;
-            }).collect(Collectors.toList()));
-            movementRepo.saveAll(movements);
-            List<Pickinglist>list=new ArrayList<>();
-            int index=0;
-            for (Movement m:movements
-                 ) {
-                Pickinglist pickinglist=pickinglists.get(index);
-                logger.info(pickinglist.getPicking_list_ID().toString());
-                pickinglist.setMovement(m);
-                list.add(pickinglist);
-                index++;
-            }
-            pickinglistRepo.saveAll(list);
-
             List<Role> roles=new ArrayList<>();
             Role role = new Role();
             role.setName("Admin");
@@ -107,22 +44,84 @@ public class DataGenerator {
             roles.add(role);
             roles.add(role1);
             roleRepo.saveAll(roles);
-
-           User user=new User();
-           user.setUserName("eki");
-           user.setPassword(passwordEncoder.encode("user"));
-           user.setRoles(roles);
-           userRepository.save(user);
+            User user=new User();
+            user.setUserName("eki");
+            user.setPassword(passwordEncoder.encode("user"));
+            user.setRoles(roles);
+            userRepository.save(user);
 
             User u=userRepository.getById(user.getId());
-            List<Pickinglist>pl=pickinglistRepo.findAll();
+            ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
+                    LocalDateTime.now());
+            productExampleDataGenerator.setData(Product::setProduct_ID, DataType.EAN13);
+            productExampleDataGenerator.setData(Product::setName, DataType.TWO_WORDS);
+            productExampleDataGenerator.setData(Product::setLocation, DataType.TWO_WORDS);
 
+
+            ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class,
+                    LocalDateTime.now());
+            pickinglistGenerator.setData(Pickinglist::setWms_company, DataType.COMPANY_NAME );
+            pickinglistGenerator.setData(Pickinglist::setWms_site, DataType.COMPANY_NAME );
+            pickinglistGenerator.setData(Pickinglist::setLocation, DataType.ADDRESS );
+            pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_100 );
+            pickinglistGenerator.setData(Pickinglist::setSupplier_ID, DataType.FOOD_PRODUCT_EAN );
+            pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD );
+            pickinglistGenerator.setData(Pickinglist::setWms_warehouse, DataType.COMPANY_NAME );
+
+            List<Product>products=productRepo.saveAll(productExampleDataGenerator.create(100, seed));
+
+            List<Pickinglist> pickinglists =pickinglistGenerator.create(10, seed);
+            pickinglistRepo.saveAll(pickinglists);
+            for (Pickinglist plist:pickinglists
+                 ) {
+                plist.setProduct(new Random().ints(5, 0, productRepo.findAll().size()).mapToObj(productRepo.findAll()::get).collect(Collectors.toList()));
+
+            }
+            ExampleDataGenerator<Stock> stockExampleDataGenerator = new ExampleDataGenerator<>(Stock.class,
+                    LocalDateTime.now());
+            stockExampleDataGenerator.setData(Stock::setStock_ID, DataType.UUID);
+            stockExampleDataGenerator.setData(Stock::setLocation, DataType.TWO_WORDS);
+            stockExampleDataGenerator.setData(Stock::setQuantity, DataType.NUMBER_UP_TO_100);
+
+            stockRepo.saveAll(stockExampleDataGenerator.create(10, seed));
+            List<Stock> stockList =stockRepo.findAll();
+
+            List<Movement>movements=new ArrayList<>();
+
+            for (Pickinglist pl: pickinglists
+                 ) {
+                for (Product p:pl.getProduct()
+                     ) {
+                    Movement movement=new Movement();
+                    movement.setMovement_type(Movementtype.FP);
+                    movement.setIn_progress_timestamp(LocalDate.now());
+                    //movement.setIn_progress_user(userRepository.getById(user.getId()).getUserName());
+                    movement.setPickinglist(pl);
+                    movement.setLocation_from(p.getLocation());
+                    movement.setLocation_to(pl.getLocation());
+                    movement.setLocation(pl.getLocation());
+                    movement.setQuantity(pl.getQuantity());
+                    movement.setUom(pl.getUom());
+                    movement.setSupplier_ID(pl.getSupplier_ID());
+                    movement.setWms_company(pl.getWms_company());
+                    movement.setWms_site(pl.getWms_site());
+                    movement.setWms_warehouse(pl.getWms_warehouse());
+                    movement.setProduct_ID(p.getProduct_ID());
+                    movement.setStock(stockRepo.getStockByLocation(pl.getLocation()));
+                    movementRepo.save(movement);
+                    movements.add(movement);
+                }
+                pl.setMovements(movements);
+                pickinglistRepo.save(pl);
+            }
+
+            logger.info("... generating " + productRepo.findAll().size() + " products in entities...");
             logger.info("... generating " + movements.size() + " movements in entities...");
             logger.info("... generating " + pickinglists.size() + " pickinglist in entities...");
             logger.info("... generating " + stockList.size() + " stocklist in entities...");
 
-            logger.info(movements.get(1).getPickinglist().getPicking_list_ID()+" in movemants pickingID");
-            logger.info(movements.get(1).getStock().getStock_ID()+" in movemanets stockId");
+            logger.info(movements.get(0).getPickinglist().getPicking_list_ID()+" in movemants pickingID");
+          //  logger.info(movements.get(1).getStock().getStock_ID()+" in movemanets stockId");
             logger.info(u.getUserName() + " " +u.getPassword()+ " is saved");
         };
     }

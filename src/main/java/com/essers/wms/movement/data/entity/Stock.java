@@ -18,7 +18,8 @@ import java.util.UUID;
 public class Stock {
     @Id
     private UUID stock_ID;
-    private String product_ID;
     private Integer quantity;
     private String location;
+    private String productID;
+
 }

@@ -4,21 +4,21 @@ import com.essers.wms.movement.data.entity.Pickinglist;
 import com.essers.wms.movement.data.service.Movementserv;
 import com.essers.wms.movement.data.service.PickinglistServ;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
+
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value="pickinglist", layout = MainView.class)
+@Route(value="", layout = MainView.class)
 @PageTitle("PickingList")
 public class PickinglistView extends VerticalLayout {
         Grid<Pickinglist> grid = new Grid<>(Pickinglist.class);
         private PickinglistServ pickinglistServ;
         private Movementserv movementserv;
-
     public PickinglistView (PickinglistServ pickinglistServ, Movementserv movementserv) {
         this.pickinglistServ = pickinglistServ;
         this.movementserv = movementserv;
@@ -28,14 +28,18 @@ public class PickinglistView extends VerticalLayout {
             configureGrid();
             updateList();
             add(getContent());
+
         }
 
     private void configureGrid() {
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
-        grid.setColumns("picking_list_ID","wms_company", "wms_site", "wms_warehouse", "product_ID", "supplier_ID", "quantity", "uom", "location");
-        grid.addColumn(pickinglist -> pickinglist.getMovement().getMovement_ID()).setHeader("Movement");
+        grid.setColumns("picking_list_ID","wms_company", "wms_site", "wms_warehouse", "supplier_ID", "quantity", "uom", "location");
+     //   grid.addColumn(pickinglist -> pickinglist.getMovement().getMovement_ID()).setHeader("Movement");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event ->
+                routerLink(event.getValue()));
+
     }
 
     private void updateList () {
@@ -47,5 +51,8 @@ public class PickinglistView extends VerticalLayout {
         content.addClassNames("content");
         content.setSizeFull();
         return content;
+    }
+    private void routerLink(Pickinglist value) {
+        UI.getCurrent().navigate("movements/"+value.getPicking_list_ID());
     }
 }

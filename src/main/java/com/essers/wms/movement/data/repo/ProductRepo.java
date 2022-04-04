@@ -1,11 +1,10 @@
 package com.essers.wms.movement.data.repo;
 
-import com.essers.wms.movement.data.entity.Pickinglist;
+import com.essers.wms.movement.data.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface PickinglistRepo extends JpaRepository<Pickinglist, Long> {
+public interface ProductRepo extends JpaRepository<Product, Long> {
+
 }

@@ -5,19 +5,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.UUID;
-
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+//@Transactional
 public class Movement {
     @Id
-    private UUID movement_ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long movement_ID;
     private String wms_company;
     private String wms_site;
     private String wms_warehouse;
-    private String movement_type;
+    private Movementtype movement_type;
     private String priority;
     private String product_ID;
     private String supplier_ID;
@@ -27,7 +27,9 @@ public class Movement {
     private String location_to;
     private LocalDate in_progress_timestamp;
     private String in_progress_user;
-    @OneToOne
+    private String location;
+    private String state;
+    @ManyToOne
     @JoinColumn(name = "picking_list_ID")
     private Pickinglist pickinglist;
 
@@ -35,12 +37,28 @@ public class Movement {
     @JoinColumn(name = "stock_ID")
     private Stock stock;
 
-    public UUID getMovement_ID() {
+    public Long getMovement_ID() {
         return movement_ID;
     }
 
-    public void setMovement_ID(UUID movement_ID) {
+    public void setMovement_ID(Long movement_ID) {
         this.movement_ID = movement_ID;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getWms_company() {
@@ -67,11 +85,11 @@ public class Movement {
         this.wms_warehouse = wms_warehouse;
     }
 
-    public String getMovement_type() {
+    public Movementtype getMovement_type() {
         return movement_type;
     }
 
-    public void setMovement_type(String movement_type) {
+    public void setMovement_type(Movementtype movement_type) {
         this.movement_type = movement_type;
     }
 

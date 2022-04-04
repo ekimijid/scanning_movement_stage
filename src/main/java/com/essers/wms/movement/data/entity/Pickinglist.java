@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -15,18 +17,20 @@ import java.util.UUID;
 @NotNull
 public class Pickinglist {
     @Id
-    private UUID picking_list_ID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long picking_list_ID;
     private String wms_company;
     private String wms_site;
     private String wms_warehouse;
-    private String product_ID;
+
+    @OneToMany(mappedBy = "pickinglist")
+    private List<Product> product;
     private String supplier_ID;
     private Integer quantity;
-    private Integer uom;
+    private String uom;
     private String location;
-    @OneToOne(fetch = FetchType.EAGER)
-    private Movement movement;
 
-
+    @OneToMany(mappedBy = "pickinglist", cascade = CascadeType.ALL, fetch= FetchType.EAGER)
+    private List<Movement> movements;
 
 }
