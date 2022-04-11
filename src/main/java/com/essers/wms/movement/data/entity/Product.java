@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +18,7 @@ public class Product {
     @JoinColumn(name = "picking_list_ID")
     private Pickinglist pickinglist;
     private String name;
+    private String location;
 
     public String getProduct_ID() {
         return product_ID;
@@ -50,6 +52,6 @@ public class Product {
         this.location = location;
     }
 
-    private String location;
+
 
 }

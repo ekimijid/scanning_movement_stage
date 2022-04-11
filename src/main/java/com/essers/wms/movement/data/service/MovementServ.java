@@ -4,12 +4,12 @@ import com.essers.wms.movement.data.entity.Movement;
 import com.essers.wms.movement.data.entity.Pickinglist;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface Movementserv {
+public interface MovementServ {
     List<Movement> getAll();
     Movement getById(Long Id);
     List<Movement>getByPickinglist(Pickinglist pickinglist);
     void remove(Movement movement);
 
+    void save(Movement movement);
 }

@@ -1,12 +1,13 @@
 package com.essers.wms.movement.views;
 
 import com.essers.wms.movement.data.entity.Pickinglist;
-import com.essers.wms.movement.data.service.Movementserv;
+import com.essers.wms.movement.data.service.CompanyServ;
+import com.essers.wms.movement.data.service.MovementServ;
 import com.essers.wms.movement.data.service.PickinglistServ;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 
@@ -18,35 +19,37 @@ import javax.annotation.security.PermitAll;
 public class PickinglistView extends VerticalLayout {
         Grid<Pickinglist> grid = new Grid<>(Pickinglist.class);
         private PickinglistServ pickinglistServ;
-        private Movementserv movementserv;
-    public PickinglistView (PickinglistServ pickinglistServ, Movementserv movementserv) {
+        private MovementServ movementserv;
+    private CompanyServ companyServ;
+
+    public PickinglistView (PickinglistServ pickinglistServ, MovementServ movementserv, CompanyServ companyServ) {
         this.pickinglistServ = pickinglistServ;
         this.movementserv = movementserv;
+        this.companyServ = companyServ;
 
         addClassName("list-view");
             setSizeFull();
             configureGrid();
             updateList();
             add(getContent());
-
         }
 
     private void configureGrid() {
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
-        grid.setColumns("picking_list_ID","wms_company", "wms_site", "wms_warehouse", "supplier_ID", "quantity", "uom", "location");
-     //   grid.addColumn(pickinglist -> pickinglist.getMovement().getMovement_ID()).setHeader("Movement");
+
+        grid.setColumns("quantity", "uom", "location");
+        grid.addColumn(Pickinglist::getPicking_list_ID).setHeader("ID");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 routerLink(event.getValue()));
-
     }
 
     private void updateList () {
             grid.setItems(pickinglistServ.getAll());
         }
     private Component getContent() {
-        H1 logo = new H1("Picking-list");
+        H5 logo = new H5("Picking-list");
         VerticalLayout content = new VerticalLayout(logo, grid);
         content.addClassNames("content");
         content.setSizeFull();

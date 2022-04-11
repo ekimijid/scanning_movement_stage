@@ -6,6 +6,7 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,32 +25,36 @@ public class MainView extends AppLayout {
     }
 
     private void createHeader() {
-        H1 logo = new H1("Scanning_movement");
+        H1 logo = new H1("WMS");
+        logo.getStyle()
+                .set("font-size", "var(--lumo-font-size-l)")
+                .set("color", "red")
+                .set("margin", "var(--lumo-space-m) var(--lumo-space-l)");
         logo.addClassNames("text-l", "m-m");
         Button logout = new Button("Log out", e->securityServ.logout());
+
         Avatar user = new Avatar(securityServ.getAuthenticatedUser().getUsername());
+        DrawerToggle dt= new DrawerToggle();
+        dt.setIcon(VaadinIcon.MENU.create());
         HorizontalLayout header = new HorizontalLayout(
-                new DrawerToggle(),
-                logo, user, logout
+                dt,
+                logo,  user, logout
         );
 
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(logo);
         header.setWidth("100%");
         header.addClassNames("py-0", "px-m");
-
         addToNavbar(header);
 
     }
 
     private void createDrawer() {
-        RouterLink listLink = new RouterLink("PickingList", PickinglistView.class);
+        RouterLink listLink = new RouterLink("Picking-lists", PickinglistView.class);
      //   RouterLink homelink = new RouterLink("Movements", MovenmentsView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
-        addToDrawer(new VerticalLayout(
-           //     homelink,
-                listLink
-
-        ));
+        VerticalLayout layout= new VerticalLayout( listLink );
+        layout.setWidth("20px");
+        addToDrawer(layout);
     }
 }

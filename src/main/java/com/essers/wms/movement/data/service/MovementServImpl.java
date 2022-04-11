@@ -7,16 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
-public class MovementServImpl implements Movementserv{
+public class MovementServImpl implements MovementServ {
+
 
     @Autowired
     private MovementRepo movementRepo;
 
     @Override
     public List<Movement> getAll() {
+
+
         return movementRepo.findAll();
     }
 
@@ -34,5 +36,10 @@ public class MovementServImpl implements Movementserv{
     public void remove(Movement movement) {
         movementRepo.delete(movement);
 
+    }
+
+    @Override
+    public void save(Movement movement) {
+        movementRepo.save(movement);
     }
 }

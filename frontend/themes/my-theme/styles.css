@@ -1,8 +1,0 @@
-/* Import your application global css files here or add the styles directly to this. file */
-.v-button-Red .v-button-wrap {
-    background:yellow;
-}
-.v-button-Red .v-button-caption {
-    font-weight: bold;
-    color:red;
-}

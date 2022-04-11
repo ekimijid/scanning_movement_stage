@@ -1,20 +1,18 @@
 package com.essers.wms.movement.views;
 
 import com.essers.wms.movement.data.entity.Movement;
-import com.essers.wms.movement.data.entity.Movementtype;
 import com.essers.wms.movement.data.entity.Pickinglist;
-import com.essers.wms.movement.data.service.Movementserv;
+import com.essers.wms.movement.data.service.MovementServ;
 import com.essers.wms.movement.data.service.PickinglistServ;
+import com.essers.wms.movement.data.service.StockServ;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.*;
 
 import javax.annotation.security.PermitAll;
-import java.util.Optional;
-import java.util.UUID;
 
 @PermitAll
 @Route(value="movements/:pickinglistID?", layout = MainView.class)
@@ -22,11 +20,13 @@ import java.util.UUID;
 public class MovenmentsView extends VerticalLayout implements BeforeEnterObserver {
     Grid<Movement> grid = new Grid<>(Movement.class);
     private PickinglistServ pickinglistServ;
-    private Movementserv movementserv;
+    private MovementServ movementserv;
+    private StockServ stockServ;
 
-    public MovenmentsView (PickinglistServ pickinglistServ, Movementserv movementserv) {
+    public MovenmentsView (PickinglistServ pickinglistServ, MovementServ movementserv, StockServ stockServ) {
         this.pickinglistServ = pickinglistServ;
         this.movementserv = movementserv;
+        this.stockServ = stockServ;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
@@ -36,21 +36,20 @@ public class MovenmentsView extends VerticalLayout implements BeforeEnterObserve
     private void configureGrid() {
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
-        grid.setColumns("movement_ID","wms_company", "wms_site", "wms_warehouse", "movement_type","priority","product_ID",
-                "supplier_ID", "quantity", "uom", "location_from", "location_to","in_progress_timestamp", "in_progress_user");
-      //  grid.addColumn(movement -> movement.getStock().getQuantity()).setHeader("Stock");
+        grid.setColumns("movement_ID","product_ID", "movement_type","wms_company", "wms_site", "wms_warehouse","in_progress_user","state","in_progress_timestamp","handled_user", "quantity", "uom",
+                "location_from", "location_to",
+                "supplier_ID");
         grid.addColumn(movement -> movement.getPickinglist().getPicking_list_ID()).setHeader("PickingList");
+        grid.addColumn(movement -> movement.getStock(movement.getProduct_ID())).setHeader("Stock");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 routerLink(event.getValue()));
     }
-
-
     private Component getContent() {
-        H1 logo = new H1("Movements");
+        H5 logo = new H5("Movements");
         VerticalLayout content = new VerticalLayout(logo, grid);
-        content.addClassNames("content");
         content.setSizeFull();
+        content.addClassNames("content");
         return content;
     }
 

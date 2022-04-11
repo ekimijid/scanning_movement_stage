@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@PWA(name = "Scanner WMS", shortName = "WMS", offlinePath="offline.html",
+@PWA(name = "Scanner WMS", shortName = "WMS", offlinePath="offline.html",manifestPath = "manifest.json",
         offlineResources = { "./images/offline.png"} )
 public class MovementApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 

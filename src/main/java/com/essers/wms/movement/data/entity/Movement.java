@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,17 +28,18 @@ public class Movement {
     private String uom;
     private String location_from;
     private String location_to;
-    private LocalDate in_progress_timestamp;
+    private LocalDateTime in_progress_timestamp;
     private String in_progress_user;
     private String location;
     private String state;
+    private String handled_user;
+
     @ManyToOne
     @JoinColumn(name = "picking_list_ID")
     private Pickinglist pickinglist;
 
-    @OneToOne
-    @JoinColumn(name = "stock_ID")
-    private Stock stock;
+    @ManyToMany
+    private List<Stock> stock=new ArrayList<>();
 
     public Long getMovement_ID() {
         return movement_ID;
@@ -43,6 +47,14 @@ public class Movement {
 
     public void setMovement_ID(Long movement_ID) {
         this.movement_ID = movement_ID;
+    }
+
+    public String getHandled_user() {
+        return handled_user;
+    }
+
+    public void setHandled_user(String handled_user) {
+        this.handled_user = handled_user;
     }
 
     public String getState() {
@@ -149,11 +161,11 @@ public class Movement {
         this.location_to = location_to;
     }
 
-    public LocalDate getIn_progress_timestamp() {
+    public LocalDateTime getIn_progress_timestamp() {
         return in_progress_timestamp;
     }
 
-    public void setIn_progress_timestamp(LocalDate in_progress_timestamp) {
+    public void setIn_progress_timestamp(LocalDateTime in_progress_timestamp) {
         this.in_progress_timestamp = in_progress_timestamp;
     }
 
@@ -173,11 +185,22 @@ public class Movement {
         this.pickinglist = pickinglist;
     }
 
-    public Stock getStock() {
+    public List<Stock> getStock() {
         return stock;
     }
 
-    public void setStock(Stock stock) {
+    public void setStock(List<Stock> stock) {
         this.stock = stock;
+    }
+
+    public int getStock(String product_ID){
+        int stocks=0;
+        for (Stock s: getStock()
+             ) {
+                    if(s.getProductID().equals(product_ID) && s.getLocation().equals(getLocation())){
+                        stocks=s.getQuantity();
+            }
+        }
+        return stocks;
     }
 }
