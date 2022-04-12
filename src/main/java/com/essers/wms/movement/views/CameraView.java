@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 @PermitAll
-@Route("camera")
+@Route(value="camera", layout = MainView.class)
 public class CameraView extends VerticalLayout {
     private Component previousPhoto;
     private Paragraph photoName;

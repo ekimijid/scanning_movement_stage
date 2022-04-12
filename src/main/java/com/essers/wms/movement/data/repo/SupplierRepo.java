@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SupplierRepo extends JpaRepository<Supplier, Long> {
-    Supplier getSupplierByPickinglist(Pickinglist pickinglist);
+
 }

@@ -1,8 +1,12 @@
 package com.essers.wms.movement.views;
 
 import com.essers.wms.movement.data.entity.Movement;
+import com.essers.wms.movement.data.entity.Product;
+import com.essers.wms.movement.data.repo.ProductRepo;
 import com.essers.wms.movement.data.service.MovementServ;
+import com.essers.wms.movement.data.service.ProductServ;
 import com.essers.wms.movement.security.SecurityServ;
+import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -33,27 +37,33 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
 
     private MovementServ movementserv;
     private SecurityServ securityServ;
+    private ProductServ productserv;
+    private Product product;
+    private Movement movement;
 
-    public ScannerWMSView(MovementServ movementserv, SecurityServ securityServ) {
+    public ScannerWMSView(MovementServ movementserv, SecurityServ securityServ, ProductServ productserv) {
         this.movementserv = movementserv;
         this.securityServ = securityServ;
+        this.productserv = productserv;
         setSizeFull();
+
 
     }
 
     private void imageSend() {
-        Notification.show("Image maken");
+        UI.getCurrent().navigate("camera");
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-
-        details(movementserv.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("movementID").get())));
+        movement=movementserv.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("movementID").get()));
+        product=productserv.getByID(movement.getProduct_ID());
+        details(movement, product );
 
     }
-    private void details(Movement movement){
+    private void details(Movement movement, Product product){
         if(movement.getState().equals("picked")){
-            message("Barcode has allready been scaned!");
+            message("Barcode has already been scanned!");
             Button button=new Button("Back to movements", buttonClickEvent -> {
                 routerLink(movement);
             });
@@ -68,20 +78,26 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             movement.setIn_progress_user(securityServ.getAuthenticatedUser().getUsername());
             movement.setState("in_process");
             movementserv.save(movement);
-            Span user=new Span("User:  "+movement.getIn_progress_user()+ " progress");
-            Span name = new Span("Company:  " + movement.getWms_company());
-            Span site = new Span( "Site:   "+ movement.getWms_site()+ "-"+movement.getWms_warehouse());
+            Icon prodicon=new Icon(VaadinIcon.PACKAGE);
+         //   prodicon.setSize("--lumo-size-xs");
+            Span prod=new Span(product.getName().toUpperCase()+ " " );
+            Span quantity = new Span(movement.getQuantity()+" "+movement.getMovement_type());
+            HorizontalLayout layout = new HorizontalLayout(prodicon, quantity);
+            Span site = new Span( movement.getWms_site()+ "-"+movement.getWms_warehouse());
             Span stock=new Span("Stock:   " + movement.getStock(movement.getProduct_ID()));
             Span productId = new Span( movement.getProduct_ID());
-            VerticalLayout contentInfo = new VerticalLayout(user, name, site, stock, productId);
+            VerticalLayout contentInfo = new VerticalLayout(prod, layout, site, stock, productId);
             contentInfo.setPadding(false);
             contentInfo.setSpacing(false);
             Details detailsInfo = new Details("Movement information", contentInfo);
             detailsInfo.addThemeVariants(DetailsVariant.FILLED);
             detailsInfo.setOpened(false);
-
+            Icon locIcon= new Icon(VaadinIcon.MAP_MARKER);
+         //   locIcon.setSize("--lumo-size-xs");
             Span from=new Span("From: " + movement.getLocation_from());
-            Span to=new Span("To: "+ movement.getLocation_to());
+            Span to=new Span("To: "+movement.getLocation_to());
+            HorizontalLayout layout1=new HorizontalLayout(locIcon, from);
+            HorizontalLayout layout2=new HorizontalLayout(locIcon, to);
             TextField textField = new TextField();
             textField.setLabel("Pallet ID    ");
             textField.setValue("Pallet ID"   );
@@ -90,7 +106,7 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
                 scanProductCode(movement, textField.getValue());
                 detailsInfo.setOpened(false);
             });
-            VerticalLayout contentPalletID = new VerticalLayout(from, to, textField, button);
+            VerticalLayout contentPalletID = new VerticalLayout(layout1, layout2, textField, button);
             contentPalletID.setPadding(false);
             contentPalletID.setSpacing(false);
             Details detailsPalletID= new Details("Scan PalletID", contentPalletID);
@@ -115,10 +131,11 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             VerticalLayout content= new VerticalLayout(loc, textField, button);
             content.setSpacing(false);
             content.setPadding(false);
-            Details details = new Details("Scan shiping location", content);
+            Details details = new Details("Scan shipping location", content);
             details.setOpened(false);
             details.addThemeVariants(DetailsVariant.FILLED);
             add(details);
+
         }
         else {
             message("Pallet ID is not correct");
@@ -158,4 +175,5 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             UI.getCurrent().navigate("movements/"+movement.getPickinglist().getPicking_list_ID());
 
         }
+
 }

@@ -14,10 +14,9 @@ public class Site {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String name;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "picking_list_ID")
-    private Pickinglist pickinglist;
-
+    public Site(String s) {
+        this.name=s;
+    }
 }

@@ -23,9 +23,5 @@ public class CompanyServImpl implements CompanyServ {
         return companyRepo.getById(Id);
     }
 
-    @Override
-    public Company getCompanyByPickinglist(Pickinglist pickinglist) {
-        return companyRepo.getCompanyByPickinglist(pickinglist);
-    }
 
 }

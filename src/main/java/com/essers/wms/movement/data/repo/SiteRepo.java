@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SiteRepo extends JpaRepository<Site,Long> {
-    Site getSiteByPickinglist(Pickinglist pickinglist);
+
 }

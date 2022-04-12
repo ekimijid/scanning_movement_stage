@@ -17,8 +17,4 @@ public class Supplier {
 
     String name;
 
-    @ManyToOne
-    @JoinColumn(name = "picking_list_ID")
-    private Pickinglist pickinglist;
-
 }

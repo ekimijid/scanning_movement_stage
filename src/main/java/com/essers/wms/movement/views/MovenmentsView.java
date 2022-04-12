@@ -37,8 +37,7 @@ public class MovenmentsView extends VerticalLayout implements BeforeEnterObserve
         grid.addClassNames("contact-grid");
         grid.setSizeFull();
         grid.setColumns("movement_ID","product_ID", "movement_type","wms_company", "wms_site", "wms_warehouse","in_progress_user","state","in_progress_timestamp","handled_user", "quantity", "uom",
-                "location_from", "location_to",
-                "supplier_ID");
+                "location_from", "location_to");
         grid.addColumn(movement -> movement.getPickinglist().getPicking_list_ID()).setHeader("PickingList");
         grid.addColumn(movement -> movement.getStock(movement.getProduct_ID())).setHeader("Stock");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

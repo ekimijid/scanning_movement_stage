@@ -1,5 +1,6 @@
 package com.essers.wms.movement.data.service;
 
+import com.essers.wms.movement.data.entity.Company;
 import com.essers.wms.movement.data.entity.Pickinglist;
 import com.essers.wms.movement.data.repo.PickinglistRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,10 @@ public class PickinglistServImpl implements PickinglistServ{
     @Override
     public Pickinglist getById(Long Id) {
         return pickinglistRepo.getById(Id);
+    }
+
+    @Override
+    public List<Pickinglist> getByCompany(Company company) {
+        return pickinglistRepo.getPickinglistsByCompany(company);
     }
 }

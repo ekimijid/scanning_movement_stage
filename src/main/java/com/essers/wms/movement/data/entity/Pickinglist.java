@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -20,19 +21,19 @@ public class Pickinglist {
     private Long picking_list_ID;
 
     @OneToOne
-    private Company wms_company;
+    private Company company;
+
+    @OneToOne
+    private Site wms_site;
+
+    @OneToOne
+    private  Warehouse wms_warehouse;
 
     @OneToMany(mappedBy = "pickinglist")
-    private List<Site> wms_site;
+    private List<Product> product = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pickinglist")
-    private  List<Warehouse> wms_warehouse;
-
-    @OneToMany(mappedBy = "pickinglist")
-    private List<Product> product;
-
-    @OneToMany(mappedBy = "pickinglist")
-    private List<Supplier> supplier_ID;
+    @OneToOne
+    private Supplier supplier_ID;
 
     private Integer quantity;
     private String uom;
@@ -41,23 +42,4 @@ public class Pickinglist {
     @OneToMany(mappedBy = "pickinglist")
     private List<Movement> movements;
 
-    public String getCompany(Company company) {
-        return company.getName();
-    }
-
-    public String getSite(Site site) {
-        return site.getName();
-    }
-
-    public String getWarehouse(Warehouse warehouse) {
-        return warehouse.getName();
-    }
-
-    public String getProduct(Product product) {
-        return product.getName();
-    }
-
-    public String getSupplier_ID(Supplier supplier) {
-        return supplier.getName();
-    }
 }

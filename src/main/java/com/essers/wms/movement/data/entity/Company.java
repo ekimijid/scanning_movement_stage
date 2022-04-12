@@ -15,11 +15,6 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    String name;
-
-    @OneToOne
-    @JoinColumn(name = "picking_list_ID")
-    private Pickinglist pickinglist;
+    private String name;
 
 }

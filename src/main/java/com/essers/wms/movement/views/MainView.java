@@ -49,8 +49,8 @@ public class MainView extends AppLayout {
 
     }
 
-    private void createDrawer() {
-        RouterLink listLink = new RouterLink("Picking-lists", PickinglistView.class);
+   private void createDrawer() {
+        RouterLink listLink = new RouterLink("Home", CompanyView.class);
      //   RouterLink homelink = new RouterLink("Movements", MovenmentsView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
         VerticalLayout layout= new VerticalLayout( listLink );

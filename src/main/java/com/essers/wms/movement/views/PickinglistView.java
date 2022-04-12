@@ -1,5 +1,6 @@
 package com.essers.wms.movement.views;
 
+import com.essers.wms.movement.data.entity.Company;
 import com.essers.wms.movement.data.entity.Pickinglist;
 import com.essers.wms.movement.data.service.CompanyServ;
 import com.essers.wms.movement.data.service.MovementServ;
@@ -14,19 +15,20 @@ import com.vaadin.flow.router.*;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value="", layout = MainView.class)
+@Route(value="pickinglist/:companyID", layout = MainView.class)
 @PageTitle("PickingList")
-public class PickinglistView extends VerticalLayout {
+public class PickinglistView extends VerticalLayout implements BeforeEnterObserver{
         Grid<Pickinglist> grid = new Grid<>(Pickinglist.class);
         private PickinglistServ pickinglistServ;
         private MovementServ movementserv;
-    private CompanyServ companyServ;
+        private CompanyServ companyServ;
+        private Company company;
 
     public PickinglistView (PickinglistServ pickinglistServ, MovementServ movementserv, CompanyServ companyServ) {
         this.pickinglistServ = pickinglistServ;
         this.movementserv = movementserv;
         this.companyServ = companyServ;
-
+        System.out.println("Company: "+ company);
         addClassName("list-view");
             setSizeFull();
             configureGrid();
@@ -35,18 +37,17 @@ public class PickinglistView extends VerticalLayout {
         }
 
     private void configureGrid() {
-        grid.addClassNames("contact-grid");
-        grid.setSizeFull();
-
-        grid.setColumns("quantity", "uom", "location");
-        grid.addColumn(Pickinglist::getPicking_list_ID).setHeader("ID");
+        grid.setColumns("picking_list_ID");
+        grid.addColumn(pickinglist -> pickinglist.getCompany().getName()).setHeader("Company");
+        grid.addColumn(pickinglist -> pickinglist.getWms_site().getName()).setHeader("Site");
+        grid.addColumn(pickinglist -> pickinglist.getWms_warehouse().getName()).setHeader("Warehouse");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 routerLink(event.getValue()));
     }
 
     private void updateList () {
-            grid.setItems(pickinglistServ.getAll());
+            grid.setItems(pickinglistServ.getByCompany(company));
         }
     private Component getContent() {
         H5 logo = new H5("Picking-list");
@@ -57,5 +58,13 @@ public class PickinglistView extends VerticalLayout {
     }
     private void routerLink(Pickinglist value) {
         UI.getCurrent().navigate("movements/"+value.getPicking_list_ID());
+    }
+
+    @Override
+    public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
+      company=companyServ.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("companyID").get()));
+        System.out.println("Company: "+ company);
+      updateList();
+        System.out.println(pickinglistServ.getByCompany(company).size());
     }
 }

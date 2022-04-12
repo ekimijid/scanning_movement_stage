@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CompanyRepo extends JpaRepository<Company, Long> {
-    Company getCompanyByPickinglist(Pickinglist pickinglist);
+
 }

@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface StockRepo extends JpaRepository<Stock, Long> {
-    List<Stock> getStocksByLocationAndProductID(String location, String productID);
+
 }

@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WarehouseRepo extends JpaRepository<Warehouse, Long> {
-    Warehouse getWarehouseByPickinglist(Pickinglist pickinglist);
 }

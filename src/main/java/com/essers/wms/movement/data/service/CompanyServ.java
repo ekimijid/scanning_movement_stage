@@ -8,5 +8,4 @@ import java.util.List;
 public interface CompanyServ {
     List<Company> getAll();
     Company getById(Long Id);
-    Company getCompanyByPickinglist(Pickinglist pickinglist);
 }

@@ -14,10 +14,9 @@ public class Warehouse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String name;
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "pickinglist_picking_list_id")
-    private Pickinglist pickinglist;
-
+    public Warehouse(String s) {
+        this.name=s;
+    }
 }
