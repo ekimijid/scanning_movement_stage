@@ -80,7 +80,7 @@ public class DataGenerator {
             pickinglistGenerator.setData(Pickinglist::setLocation, DataType.ADDRESS );
             pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_10 );
             pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD );
-            List<Pickinglist> pickinglists =pickinglistGenerator.create(10, seed).stream().map(plist -> {
+            List<Pickinglist> pickinglists =pickinglistGenerator.create(40, seed).stream().map(plist -> {
                 plist.setProduct(new Random().ints(10, 0, products.size()).mapToObj(products::get).toList());
                 plist.setCompany(companies.get( new Random().nextInt(companyRepo.findAll().size())));
                 plist.setWms_site(sites.get(new Random().nextInt(siteRepo.findAll().size())));
@@ -99,7 +99,10 @@ public class DataGenerator {
                 s.setProductID(p.getProduct().get(i).getProduct_ID());
                 s.setQuantity(2);
                 stocks.add(s);
-                i++;
+                if(i<9){
+                    i++;
+                }
+
             }
 
             stockRepo.saveAll(stocks);
