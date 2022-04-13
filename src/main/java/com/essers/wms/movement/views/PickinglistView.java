@@ -41,7 +41,7 @@ public class PickinglistView extends VerticalLayout implements BeforeEnterObserv
         grid.addColumn(pickinglist -> pickinglist.getCompany().getName()).setHeader("Company");
         grid.addColumn(pickinglist -> pickinglist.getWms_site().getName()).setHeader("Site");
         grid.addColumn(pickinglist -> pickinglist.getWms_warehouse().getName()).setHeader("Warehouse");
-        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+       // grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event ->
                 routerLink(event.getValue()));
     }

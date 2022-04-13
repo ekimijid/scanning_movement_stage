@@ -17,7 +17,9 @@ import javax.annotation.security.PermitAll;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -54,6 +56,7 @@ public class CameraView extends VerticalLayout {
 
     private Component createComponent(String mimeType, String fileName, InputStream stream) {
         if (mimeType.startsWith("image")) {
+            File imagefile=new File(fileName+".png");
             Image image = new Image();
             try {
                 byte[] bytes = IOUtils.toByteArray(stream);
@@ -67,6 +70,7 @@ public class CameraView extends VerticalLayout {
                         try {
                             reader.setInput(in);
                             image.setMaxWidth("100%");
+                            ImageIO.write((RenderedImage) image, "png", imagefile);
                         } finally {
                             reader.dispose();
                         }

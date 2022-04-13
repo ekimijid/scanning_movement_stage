@@ -14,6 +14,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.details.DetailsVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -71,15 +72,15 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
         }
         else {
             Button alertbutton=new Button("Damage", buttonClickEvent -> { imageSend();});
-            alertbutton.setIcon(VaadinIcon.INFO.create());
+            alertbutton.setIcon(VaadinIcon.FILE.create());
             alertbutton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
             add(alertbutton);
-            alertbutton.getElement().getStyle().set("margin-right", "auto");
+         //   alertbutton.getElement().getStyle().set("")
             movement.setIn_progress_user(securityServ.getAuthenticatedUser().getUsername());
             movement.setState("in_process");
             movementserv.save(movement);
             Icon prodicon=new Icon(VaadinIcon.PACKAGE);
-         //   prodicon.setSize("--lumo-size-xs");
+
             Span prod=new Span(product.getName().toUpperCase()+ " " );
             Span quantity = new Span(movement.getQuantity()+" "+movement.getMovement_type());
             HorizontalLayout layout = new HorizontalLayout(prodicon, quantity);
