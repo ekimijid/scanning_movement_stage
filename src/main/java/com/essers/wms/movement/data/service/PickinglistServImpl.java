@@ -28,4 +28,9 @@ public class PickinglistServImpl implements PickinglistServ{
     public List<Pickinglist> getByCompany(Company company) {
         return pickinglistRepo.getPickinglistsByCompany(company);
     }
+
+    @Override
+    public void save(Pickinglist pl) {
+        pickinglistRepo.save(pl);
+    }
 }

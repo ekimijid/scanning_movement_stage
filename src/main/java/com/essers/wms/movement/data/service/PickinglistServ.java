@@ -10,4 +10,6 @@ public interface PickinglistServ {
     List<Pickinglist> getAll();
     Pickinglist getById(Long Id);
     List<Pickinglist> getByCompany(Company company);
+
+    void save(Pickinglist pl);
 }

@@ -10,12 +10,16 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Damagereport {
+public class Damagereport  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String Filename;
-    private String ProductId;
-    private String Location;
+    private Long Id;
+    private String productName;
+    private String productID;
+    private String movementID;
+
+    @Lob
+    @Column(name = "picByte", length = 1000)
+    private byte[] image;
 
 }

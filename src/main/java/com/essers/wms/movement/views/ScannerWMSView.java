@@ -51,10 +51,6 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
 
     }
 
-    private void imageSend() {
-        UI.getCurrent().navigate("camera");
-    }
-
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         movement=movementserv.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("movementID").get()));
@@ -71,7 +67,7 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             add(button);
         }
         else {
-            Button alertbutton=new Button("Damage", buttonClickEvent -> { imageSend();});
+            Button alertbutton=new Button("Damage", buttonClickEvent -> { imageSend(movement);});
             alertbutton.setIcon(VaadinIcon.FILE.create());
             alertbutton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
             add(alertbutton);
@@ -80,25 +76,27 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             movement.setState("in_process");
             movementserv.save(movement);
             Icon prodicon=new Icon(VaadinIcon.PACKAGE);
-
             Span prod=new Span(product.getName().toUpperCase()+ " " );
             Span quantity = new Span(movement.getQuantity()+" "+movement.getMovement_type());
             HorizontalLayout layout = new HorizontalLayout(prodicon, quantity);
+            Icon iconSite=new Icon(VaadinIcon.BUILDING_O);
             Span site = new Span( movement.getWms_site()+ "-"+movement.getWms_warehouse());
+            HorizontalLayout layoutSite=new HorizontalLayout(iconSite, site);
             Span stock=new Span("Stock:   " + movement.getStock(movement.getProduct_ID()));
             Span productId = new Span( movement.getProduct_ID());
-            VerticalLayout contentInfo = new VerticalLayout(prod, layout, site, stock, productId);
+            VerticalLayout contentInfo = new VerticalLayout(prod, layout, layoutSite, stock, productId);
             contentInfo.setPadding(false);
             contentInfo.setSpacing(false);
             Details detailsInfo = new Details("Movement information", contentInfo);
             detailsInfo.addThemeVariants(DetailsVariant.FILLED);
             detailsInfo.setOpened(false);
             Icon locIcon= new Icon(VaadinIcon.MAP_MARKER);
+            Icon locIcon1= new Icon(VaadinIcon.MAP_MARKER);
          //   locIcon.setSize("--lumo-size-xs");
             Span from=new Span("From: " + movement.getLocation_from());
             Span to=new Span("To: "+movement.getLocation_to());
             HorizontalLayout layout1=new HorizontalLayout(locIcon, from);
-            HorizontalLayout layout2=new HorizontalLayout(locIcon, to);
+            HorizontalLayout layout2=new HorizontalLayout(locIcon1, to);
             TextField textField = new TextField();
             textField.setLabel("Pallet ID    ");
             textField.setValue("Pallet ID"   );
@@ -176,5 +174,9 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             UI.getCurrent().navigate("movements/"+movement.getPickinglist().getPicking_list_ID());
 
         }
+
+    private void imageSend(Movement movement) {
+        UI.getCurrent().navigate("damage/"+movement.getMovement_ID());
+    }
 
 }

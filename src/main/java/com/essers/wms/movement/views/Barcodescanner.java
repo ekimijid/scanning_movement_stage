@@ -10,7 +10,7 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 @Route(value="barcode", layout = MainView.class)
 public class Barcodescanner extends VerticalLayout {
-    private TextField textFieldScanner = new TextField();
+    private TextField textFieldScanner = new TextField("Scan barcodezzz: ");
     public Barcodescanner() {
         handleKeyPress("key");
         add(textFieldScanner);
@@ -25,9 +25,8 @@ public class Barcodescanner extends VerticalLayout {
     }
 
     private void handleKeyPress(String key){
-        TextField textField=new TextField();
+        TextField textField=new TextField("Scan barcodeaaaa");
         textFieldScanner.focus();
-        textFieldScanner.setLabel("barcode ");
         textFieldScanner.setLabel(textField.getValue());
         add(textField);
         System.out.println(key);

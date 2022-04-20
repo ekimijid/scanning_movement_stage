@@ -106,7 +106,7 @@ public class DataGenerator {
             }
 
             stockRepo.saveAll(stocks);
-            List<Movement>movements=new ArrayList<>();
+           List<Movement>movements=new ArrayList<>();
             for (Pickinglist pl: pickinglists
                  ) {
 

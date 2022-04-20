@@ -10,6 +10,8 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.LocalDateRenderer;
+import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.router.*;
 
 import javax.annotation.security.PermitAll;
@@ -34,10 +36,10 @@ public class MovenmentsView extends VerticalLayout implements BeforeEnterObserve
     }
 
     private void configureGrid() {
-        grid.addClassNames("contact-grid");
-        grid.setSizeFull();
-        grid.setColumns("movement_ID","product_ID", "movement_type","wms_company", "wms_site", "wms_warehouse","in_progress_user","state","in_progress_timestamp","handled_user", "quantity", "uom",
+        grid.setColumns("movement_ID","product_ID", "movement_type","wms_company", "wms_site", "wms_warehouse","in_progress_user","state","handled_user", "quantity", "uom",
                 "location_from", "location_to");
+        grid.addColumn(new LocalDateTimeRenderer<>(Movement::getIn_progress_timestamp, "yyyy.MM.dd 'at' hh:mm")
+                ).setHeader("timestamp");
         grid.addColumn(movement -> movement.getPickinglist().getPicking_list_ID()).setHeader("PickingList");
         grid.addColumn(movement -> movement.getStock(movement.getProduct_ID())).setHeader("Stock");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

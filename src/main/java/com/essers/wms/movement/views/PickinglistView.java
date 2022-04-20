@@ -28,7 +28,6 @@ public class PickinglistView extends VerticalLayout implements BeforeEnterObserv
         this.pickinglistServ = pickinglistServ;
         this.movementserv = movementserv;
         this.companyServ = companyServ;
-        System.out.println("Company: "+ company);
         addClassName("list-view");
             setSizeFull();
             configureGrid();
