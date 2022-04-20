@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -17,6 +18,7 @@ public class Damagereport  {
     private String productName;
     private String productID;
     private String movementID;
+    private LocalDateTime timestamp;
 
     @Lob
     @Column(name = "picByte", length = 1000)

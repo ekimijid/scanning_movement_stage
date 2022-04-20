@@ -7,10 +7,10 @@ import com.essers.wms.movement.data.service.PickinglistServ;
 import com.essers.wms.movement.data.service.StockServ;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.router.*;
 
@@ -24,15 +24,24 @@ public class MovenmentsView extends VerticalLayout implements BeforeEnterObserve
     private PickinglistServ pickinglistServ;
     private MovementServ movementserv;
     private StockServ stockServ;
+    private Pickinglist pickinglist;
 
     public MovenmentsView (PickinglistServ pickinglistServ, MovementServ movementserv, StockServ stockServ) {
         this.pickinglistServ = pickinglistServ;
         this.movementserv = movementserv;
         this.stockServ = stockServ;
+        Button button=new Button("Back to pickinglist", buttonClickEvent -> {
+            routerLinkBack(pickinglist);
+        });
+        add(button);
         addClassName("list-view");
         setSizeFull();
         configureGrid();
         add(getContent());
+    }
+
+    private void routerLinkBack(Pickinglist pickinglist) {
+        UI.getCurrent().navigate("pickinglist/"+pickinglist.getCompany().getId());
     }
 
     private void configureGrid() {
@@ -56,8 +65,8 @@ public class MovenmentsView extends VerticalLayout implements BeforeEnterObserve
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Pickinglist pl= pickinglistServ.getById(Long.valueOf(event.getRouteParameters().get("pickinglistID").get()));
-        grid.setItems(movementserv.getByPickinglist(pl));
+        pickinglist= pickinglistServ.getById(Long.valueOf(event.getRouteParameters().get("pickinglistID").get()));
+        grid.setItems(movementserv.getByPickinglist(pickinglist));
     }
 
     private void routerLink(Movement value) {

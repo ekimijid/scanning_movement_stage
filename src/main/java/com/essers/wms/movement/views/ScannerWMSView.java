@@ -29,6 +29,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
+import java.time.LocalDateTime;
 
 
 @PermitAll
@@ -147,6 +148,7 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             movement.setState("picked");
             movement.setIn_progress_user("");
             movement.setHandled_user(securityServ.getAuthenticatedUser().getUsername());
+            movement.setIn_progress_timestamp(LocalDateTime.now());
             movementserv.save(movement);
             routerLink(movement);
         }

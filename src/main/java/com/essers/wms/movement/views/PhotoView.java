@@ -8,6 +8,8 @@ import com.essers.wms.movement.data.service.ImageService;
 import com.essers.wms.movement.data.service.MovementServ;
 import com.essers.wms.movement.data.service.ProductServImpl;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Image;
@@ -24,6 +26,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @PermitAll
 @Route(value="damage/:movementID?", layout = MainView.class)
@@ -49,6 +52,10 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
         imageContainer.setWidth("200px");
         imageContainer.setHeight("200px");
         imageContainer.getStyle().set("overflow-x", "auto");
+        Button button=new Button("Back to movements", buttonClickEvent -> {
+            routerLink(movement);
+        });
+        add(button);
         updateList();
         add(imageContainer);
         initUploaderImage();
@@ -74,10 +81,8 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
             Movement movement= movementServ.getById(Long.valueOf(damagereport1.getMovementID()));
             return movement.getLocation();
         }).setHeader("Location");
-        grid.addColumn(damagereport1 -> {
-            Movement movement= movementServ.getById(Long.valueOf(damagereport1.getMovementID()));
-            return movement.getIn_progress_timestamp();
-        }).setHeader("Timestamp");
+        grid.addColumn(new LocalDateTimeRenderer<>(Damagereport::getTimestamp, "yyyy.MM.dd 'at' hh:mm")
+        ).setHeader("timestamp");
         grid.addColumn(damagereport1 -> {
             Movement movement= movementServ.getById(Long.valueOf(damagereport1.getMovementID()));
             return movement.getIn_progress_user();
@@ -121,6 +126,7 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
         damagereport.setProductID(productID);
         damagereport.setMovementID(movement.getMovement_ID().toString());
         damagereport.setImage(imageBytes);
+        damagereport.setTimestamp(LocalDateTime.now());
         damagereportServ.savereport(damagereport);
 
     }
@@ -132,7 +138,10 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
         imageContainer.add(image);
 
     }
+    private void routerLink(Movement movement){
+        UI.getCurrent().navigate("movements/"+movement.getPickinglist().getPicking_list_ID());
 
+    }
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         movement=movementServ.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("movementID").get()));
