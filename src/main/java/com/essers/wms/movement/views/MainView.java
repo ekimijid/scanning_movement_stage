@@ -25,10 +25,11 @@ public class MainView extends AppLayout {
     }
 
     private void createHeader() {
-        H1 logo = new H1("WMS");
+        H1 logo = new H1("WMS Scanner");
         logo.getStyle()
                 .set("font-size", "var(--lumo-font-size-l)")
-                .set("color", "red")
+                .set("color", "blue")
+                .set("font-weight", "bold")
                 .set("margin", "var(--lumo-space-m) var(--lumo-space-l)");
         logo.addClassNames("text-l", "m-m");
         Button logout = new Button("Log out", e->securityServ.logout());
@@ -50,11 +51,16 @@ public class MainView extends AppLayout {
     }
 
    private void createDrawer() {
-        RouterLink listLink = new RouterLink("Home", CompanyView.class);
+        RouterLink listLink = new RouterLink("Home", PortalView.class);
      //   RouterLink homelink = new RouterLink("Movements", MovenmentsView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
         VerticalLayout layout= new VerticalLayout( listLink );
         layout.setWidth("20px");
+        layout.getStyle()
+               .set("font-size", "var(--lumo-font-size-l)")
+               .set("font-weight", "bold")
+                .set("text-decoration","underline")
+               .set("margin", "var(--lumo-space-m) var(--lumo-space-l)");
         addToDrawer(layout);
     }
 }

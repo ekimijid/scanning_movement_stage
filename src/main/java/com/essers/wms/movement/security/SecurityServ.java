@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SecurityServ {
-    private static final String LOGOUT_SUCCESS_URL = "/";
+    private static final String LOGOUT_SUCCESS_URL = "/ScannerWMS/login";
 
     public UserDetails getAuthenticatedUser() {
         SecurityContext context = SecurityContextHolder.getContext();

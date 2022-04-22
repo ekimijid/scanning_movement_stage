@@ -19,6 +19,7 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
@@ -30,6 +31,7 @@ import java.time.LocalDateTime;
 
 @PermitAll
 @Route(value="damage/:movementID?", layout = MainView.class)
+@PageTitle("WMS Scanner")
 public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
     private Upload upload;
     private Damagereport damagereport;
@@ -77,16 +79,17 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
     }
     private void configureGrid() {
         grid.setColumns("productName", "productID");
+
         grid.addColumn(damagereport1 -> {
             Movement movement= movementServ.getById(Long.valueOf(damagereport1.getMovementID()));
-            return movement.getLocation();
+            return movement.getLocation_from();
         }).setHeader("Location");
         grid.addColumn(new LocalDateTimeRenderer<>(Damagereport::getTimestamp, "yyyy.MM.dd 'at' hh:mm")
-        ).setHeader("timestamp");
+        ).setHeader("Timestamp");
         grid.addColumn(damagereport1 -> {
             Movement movement= movementServ.getById(Long.valueOf(damagereport1.getMovementID()));
             return movement.getIn_progress_user();
-        }).setHeader("In_progress_user");
+        }).setHeader("User");
         grid.addComponentColumn(damagereport1 ->{
             Image img= imageService.generateImage(damagereport1);
             img.setHeight("200px");
@@ -94,6 +97,7 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
             return img;
         }
         ).setHeader("Photo");
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
     }
 

@@ -45,10 +45,10 @@ public class MovenmentsView extends VerticalLayout implements BeforeEnterObserve
     }
 
     private void configureGrid() {
-        grid.setColumns("movement_ID","product_ID", "movement_type","wms_company", "wms_site", "wms_warehouse","in_progress_user","state","handled_user", "quantity", "uom",
+        grid.setColumns("product_ID", "movement_type","wms_company", "wms_site", "wms_warehouse","in_progress_user","state","handled_user", "quantity", "uom",
                 "location_from", "location_to");
         grid.addColumn(new LocalDateTimeRenderer<>(Movement::getIn_progress_timestamp, "yyyy.MM.dd 'at' hh:mm")
-                ).setHeader("timestamp");
+                ).setHeader("Timestamp");
         grid.addColumn(movement -> movement.getPickinglist().getPicking_list_ID()).setHeader("PickingList");
         grid.addColumn(movement -> movement.getStock(movement.getProduct_ID())).setHeader("Stock");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));

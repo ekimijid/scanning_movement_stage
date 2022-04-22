@@ -56,8 +56,9 @@ public class DataGenerator {
             ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
                     LocalDateTime.now());
             productExampleDataGenerator.setData(Product::setProduct_ID, DataType.EAN13);
-            productExampleDataGenerator.setData(Product::setName, DataType.TWO_WORDS);
-            productExampleDataGenerator.setData(Product::setLocation, DataType.TWO_WORDS);
+            productExampleDataGenerator.setData(Product::setName, DataType.WORD);
+            productExampleDataGenerator.setData(Product::setLocation, DataType.WORD);
+            productExampleDataGenerator.setData(Product::setDescription,DataType.SENTENCE);
             List<Product>products=productRepo.saveAll(productExampleDataGenerator.create(100, seed));
 
             ExampleDataGenerator<Company> companyExampleDataGenerator = new ExampleDataGenerator<>(Company.class,
@@ -77,7 +78,7 @@ public class DataGenerator {
 
             ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class,
                     LocalDateTime.now());
-            pickinglistGenerator.setData(Pickinglist::setLocation, DataType.ADDRESS );
+            //pickinglistGenerator.setData(Pickinglist::setLocation, DataType.ADDRESS );
             pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_10 );
             pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD );
             List<Pickinglist> pickinglists =pickinglistGenerator.create(40, seed).stream().map(plist -> {
@@ -85,6 +86,7 @@ public class DataGenerator {
                 plist.setCompany(companies.get( new Random().nextInt(companyRepo.findAll().size())));
                 plist.setWms_site(sites.get(new Random().nextInt(siteRepo.findAll().size())));
                 plist.setWms_warehouse(warehouses.get(new Random().nextInt(warehouseRepo.findAll().size())));
+                plist.setLocation("RETARUS123456789");
                 return plist;
             }).collect(Collectors.toList());
 
@@ -128,6 +130,8 @@ public class DataGenerator {
                     movement.setWms_company(pl.getCompany().getName());
                     movement.setProduct_ID(p.getProduct_ID());
                     movement.setState("pick");
+                    movement.setPalleteNummer("03600029145");
+                 //   movement.setLocation("RETARUS123456789");
                     movements.add(movement);
                 }
                 pl.setMovements(movements);

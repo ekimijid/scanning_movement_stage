@@ -33,6 +33,7 @@ public class Movement {
     private String location;
     private String state;
     private String handled_user;
+    private String palleteNummer;
 
     @ManyToOne
     @JoinColumn(name = "picking_list_ID")
@@ -47,6 +48,14 @@ public class Movement {
 
     public void setMovement_ID(Long movement_ID) {
         this.movement_ID = movement_ID;
+    }
+
+    public String getPalleteNummer() {
+        return palleteNummer;
+    }
+
+    public void setPalleteNummer(String palleteNummer) {
+        this.palleteNummer = palleteNummer;
     }
 
     public String getHandled_user() {

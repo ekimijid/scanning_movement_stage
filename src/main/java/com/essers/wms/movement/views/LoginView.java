@@ -1,6 +1,6 @@
 package com.essers.wms.movement.views;
 
-import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -20,10 +20,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
         setSizeFull();
         setAlignItems(FlexComponent.Alignment.CENTER);
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
-
         login.setAction("login");
-
-        add(new H1("WMS "), login);
+        Image logo= new Image("images/logo.png", "img");
+        logo.setWidth("350px");
+        add(logo, login);
     }
 
     @Override

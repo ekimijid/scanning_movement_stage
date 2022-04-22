@@ -20,7 +20,7 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value="",  layout = MainView.class)
+@Route(value="company",  layout = MainView.class)
 @PageTitle("CompanyList")
 public class CompanyView extends VerticalLayout {
     private CompanyServ companyServ;

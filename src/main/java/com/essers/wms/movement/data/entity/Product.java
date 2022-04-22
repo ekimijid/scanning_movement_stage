@@ -19,9 +19,18 @@ public class Product {
     private Pickinglist pickinglist;
     private String name;
     private String location;
+    private String description;
 
     public String getProduct_ID() {
         return product_ID;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setProduct_ID(String product_ID) {
