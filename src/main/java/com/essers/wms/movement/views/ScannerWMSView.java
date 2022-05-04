@@ -1,8 +1,10 @@
 package com.essers.wms.movement.views;
 
 import com.essers.wms.movement.data.entity.Movement;
+import com.essers.wms.movement.data.entity.Pickinglist;
 import com.essers.wms.movement.data.entity.Product;
 import com.essers.wms.movement.data.service.MovementServ;
+import com.essers.wms.movement.data.service.PickinglistServ;
 import com.essers.wms.movement.data.service.ProductServ;
 import com.essers.wms.movement.security.SecurityServ;
 import com.vaadin.flow.component.ClientCallable;
@@ -28,6 +30,8 @@ import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @PermitAll
@@ -38,24 +42,25 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
     private MovementServ movementserv;
     private SecurityServ securityServ;
     private ProductServ productserv;
+    private PickinglistServ pickinglistServ;
     private Product product;
     private Movement movement;
     private TextField textFieldScanner;
+    private Pickinglist pickinglist;
+    private List<Movement> movementList=new ArrayList<>();
 
-    public ScannerWMSView(MovementServ movementserv, SecurityServ securityServ, ProductServ productserv) {
+    public ScannerWMSView(MovementServ movementserv, SecurityServ securityServ, ProductServ productserv, PickinglistServ pickinglistServ) {
         this.movementserv = movementserv;
         this.securityServ = securityServ;
         this.productserv = productserv;
+        this.pickinglistServ = pickinglistServ;
         setSizeFull();
-
-
     }
-
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        movement=movementserv.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("movementID").get()));
-        product=productserv.getByID(movement.getProduct_ID());
-        details(movement, product );
+        this.movement=movementserv.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("movementID").get()));
+        this.product=productserv.getByID(movement.getProduct_ID());
+        details(movement, product);
 
     }
     private void details(Movement movement, Product product){
@@ -79,8 +84,9 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             Span desc = new Span(product.getDescription());
             desc.getElement().getStyle().set("word-wrap"," break-word");
             HorizontalLayout layoutdesc = new HorizontalLayout(infoicon, desc);
-            Icon prodicon=new Icon(VaadinIcon.PACKAGE);
+
             Span prod=new Span(product.getName().toUpperCase()+ " " );
+            Icon prodicon=new Icon(VaadinIcon.PACKAGE);
             Span quantity = new Span(movement.getQuantity()+" "+movement.getMovement_type());
             HorizontalLayout layout = new HorizontalLayout(prodicon, quantity);
             Icon iconSite=new Icon(VaadinIcon.BUILDING_O);
@@ -144,7 +150,6 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
         else {
             message("Pallet ID is not correct");
         }
-
     }
 
     private void updatePickinglist(Movement movement, String str) {
@@ -154,7 +159,7 @@ public class ScannerWMSView extends Div implements BeforeEnterObserver {
             movement.setHandled_user(securityServ.getAuthenticatedUser().getUsername());
             movement.setIn_progress_timestamp(LocalDateTime.now());
             movementserv.save(movement);
-            routerLink(movement);
+           routerLink(movement);
         }
         else{
             message("Shipping location is not correct");

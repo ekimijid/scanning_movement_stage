@@ -51,7 +51,11 @@ public class DataGenerator {
             user.setPassword(passwordEncoder.encode("user"));
             user.setRoles(roles);
             userRepository.save(user);
-
+            User user2=new User();
+            user.setUserName("Max");
+            user.setPassword(passwordEncoder.encode("user"));
+            user.setRoles(roles);
+            userRepository.save(user2);
             User u=userRepository.getById(user.getId());
             ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
                     LocalDateTime.now());

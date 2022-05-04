@@ -56,7 +56,9 @@ public class PickinglistView extends VerticalLayout implements BeforeEnterObserv
         return content;
     }
     private void routerLink(Pickinglist value) {
-        UI.getCurrent().navigate("movements/"+value.getPicking_list_ID());
+
+       UI.getCurrent().navigate("movements/"+value.getPicking_list_ID());
+       // UI.getCurrent().navigate("scanner/"+value.getPicking_list_ID());
     }
 
     @Override
