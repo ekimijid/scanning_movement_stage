@@ -1,26 +1,25 @@
 package com.essers.wms.movement.data.service;
 
 import com.essers.wms.movement.data.entity.Company;
-import com.essers.wms.movement.data.entity.Pickinglist;
-import com.essers.wms.movement.data.repo.CompanyRepo;
+import com.essers.wms.movement.data.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class CompanyServImpl implements CompanyServ {
+public class CompanyServiceImplementation implements CompanyService {
     @Autowired
-    CompanyRepo companyRepo;
+    CompanyRepository companyRepository;
 
     @Override
     public List<Company> getAll() {
-        return companyRepo.findAll();
+        return companyRepository.findAll();
     }
 
     @Override
-    public Company getById(Long Id) {
-        return companyRepo.getById(Id);
+    public Company getById(Long id) {
+        return companyRepository.findCompanyById(id);
     }
 
 

@@ -1,18 +1,15 @@
 package com.essers.wms.movement.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
-import javax.persistence.*;
-
-@Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-public class Product {
+public class Product implements Serializable {
     @Id
-    private String product_ID;
+    private String productId;
 
     @ManyToOne()
     @JoinColumn(name = "picking_list_ID")
@@ -21,8 +18,8 @@ public class Product {
     private String location;
     private String description;
 
-    public String getProduct_ID() {
-        return product_ID;
+    public String getproductId() {
+        return productId;
     }
 
     public String getDescription() {
@@ -33,8 +30,8 @@ public class Product {
         this.description = description;
     }
 
-    public void setProduct_ID(String product_ID) {
-        this.product_ID = product_ID;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public Pickinglist getPickinglist() {

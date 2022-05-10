@@ -4,7 +4,8 @@ import com.essers.wms.movement.data.entity.Stock;
 
 import java.util.List;
 
-public interface StockServ {
+public interface StockService {
     List<Stock> getAll();
-    Stock getById(Long Id);
+
+    Stock getById(Long id);
 }

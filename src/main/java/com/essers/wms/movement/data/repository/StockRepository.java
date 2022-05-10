@@ -1,12 +1,11 @@
-package com.essers.wms.movement.data.repo;
+package com.essers.wms.movement.data.repository;
 
 import com.essers.wms.movement.data.entity.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface StockRepo extends JpaRepository<Stock, Long> {
+public interface StockRepository extends JpaRepository<Stock, Long> {
+    Stock findStockById(Long id);
 
 }

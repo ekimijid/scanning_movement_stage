@@ -1,25 +1,49 @@
 package com.essers.wms.movement.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.io.Serializable;
 
-import javax.annotation.Nullable;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.UUID;
-
-@Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-public class Stock {
+public class Stock implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movement_ID;
+    private Long id;
     private Integer quantity;
     private String location;
-    private String productID;
+    private String productId;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long movementId) {
+        this.id = movementId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 }

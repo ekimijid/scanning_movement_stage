@@ -1,4 +1,4 @@
-package com.essers.wms.movement.data.repo;
+package com.essers.wms.movement.data.repository;
 
 import com.essers.wms.movement.data.entity.Company;
 import com.essers.wms.movement.data.entity.Pickinglist;
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PickinglistRepo extends JpaRepository<Pickinglist, Long> {
+public interface PickinglistRepository extends JpaRepository<Pickinglist, Long> {
     List<Pickinglist> getPickinglistsByCompany(Company company);
+    Pickinglist findPickinglistByPickingListId(Long id);
 }

@@ -1,39 +1,37 @@
 package com.essers.wms.movement.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@NotNull
-public class Pickinglist {
+
+public class Pickinglist implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long picking_list_ID;
+    private Long pickingListId;
 
     @OneToOne
     private Company company;
 
     @OneToOne
-    private Site wms_site;
+    private Site wmsSite;
 
     @OneToOne
-    private  Warehouse wms_warehouse;
+    private  Warehouse wmsWarehouse;
 
     @OneToMany(mappedBy = "pickinglist")
     private List<Product> product = new ArrayList<>();
 
     @OneToOne
-    private Supplier supplier_ID;
+    private Supplier supplierId;
 
     private Integer quantity;
     private String uom;
@@ -42,4 +40,83 @@ public class Pickinglist {
     @OneToMany(mappedBy = "pickinglist")
     private List<Movement> movements;
 
+    public Long getPickingListId() {
+        return pickingListId;
+    }
+
+    public void setPickingListId(Long pickingListId) {
+        this.pickingListId = pickingListId;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Site getWmsSite() {
+        return wmsSite;
+    }
+
+    public void setWmsSite(Site wmsSite) {
+        this.wmsSite = wmsSite;
+    }
+
+    public Warehouse getWmsWarehouse() {
+        return wmsWarehouse;
+    }
+
+    public void setWmsWarehouse(Warehouse wmsWarehouse) {
+        this.wmsWarehouse = wmsWarehouse;
+    }
+
+    public List<Product> getProduct() {
+        return product;
+    }
+
+    public void setProduct(List<Product> product) {
+        this.product = product;
+    }
+
+    public Supplier getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Supplier supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<Movement> getMovements() {
+        return movements;
+    }
+
+    public void setMovements(List<Movement> movements) {
+        this.movements = movements;
+    }
 }

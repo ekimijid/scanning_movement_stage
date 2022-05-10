@@ -3,24 +3,20 @@ package com.essers.wms.movement.views;
 import com.essers.wms.movement.data.entity.Damagereport;
 import com.essers.wms.movement.data.entity.Movement;
 import com.essers.wms.movement.data.entity.Product;
-import com.essers.wms.movement.data.service.DamagereportServ;
+import com.essers.wms.movement.data.service.DamageReportService;
 import com.essers.wms.movement.data.service.ImageService;
-import com.essers.wms.movement.data.service.MovementServ;
-import com.essers.wms.movement.data.service.ProductServImpl;
+import com.essers.wms.movement.data.service.MovementService;
+import com.essers.wms.movement.data.service.ProductServiceImplementation;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.component.upload.UploadI18N;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
-import com.vaadin.flow.data.renderer.LocalDateTimeRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -33,63 +29,56 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+
+import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
 
 @PermitAll
-@Route(value = "damage/:movementID?", layout = MainView.class)
+@Route(value = "damage/:movementID", layout = MainView.class)
 @PageTitle("WMS Scanner")
-public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
-    private Upload upload;
+public final class PhotoView extends VerticalLayout implements BeforeEnterObserver {
+    private static final String PIXEL = "200px";
+
     private Damagereport damagereport;
     private Product product;
-    private MovementServ movementServ;
-    private ImageService imageService;
-    private VerticalLayout imageContainer;
-    private DamagereportServ damagereportServ;
-    private ProductServImpl productServ;
+    private final transient MovementService movementService;
+    private final transient ImageService imageService;
+    private final transient VerticalLayout imageContainer;
+    private final transient DamageReportService damageReportService;
+    private final transient ProductServiceImplementation productServ;
     private Movement movement;
 
-    public PhotoView(ImageService imageService, ProductServImpl productServ, DamagereportServ damagereportServ, MovementServ movementServ) {
+    public PhotoView(ImageService imageService, ProductServiceImplementation productServ, DamageReportService damageReportService, MovementService movementService) {
         this.imageService = imageService;
-        this.damagereportServ = damagereportServ;
-        this.movementServ = movementServ;
+        this.damageReportService = damageReportService;
+        this.movementService = movementService;
         this.productServ = productServ;
         damagereport = new Damagereport();
         imageContainer = new VerticalLayout();
-        imageContainer.setWidth("200px");
-        imageContainer.setHeight("200px");
+        imageContainer.setWidth(PIXEL);
+        imageContainer.setHeight(PIXEL);
         imageContainer.getStyle().set("overflow-x", "auto");
-        Button button = new Button("Back to movements", buttonClickEvent -> {
-            routerLink(movement);
-        });
-        add(button);
+        Button buttonback = new Button("Back to movements", buttonClickEvent -> routerLink(movement));
 
-        for (Damagereport d:damagereportServ.getAll()
-             ) {
+        H5 logo = new H5("Damage Raports:");
+        add(buttonback, logo );
+
+        for (Damagereport d : damageReportService.getAll()) {
             add(getContent(d));
         }
-
         initUploaderImage();
         add(imageContainer);
     }
 
     private Component getContent(Damagereport damagereport) {
-        Movement mov=movementServ.getById(Long.valueOf(damagereport.getMovementID()));
-
-        TextArea info = new TextArea(
-                null,
-                "Product: " + damagereport.getProductName()+ "" +
-                        "\nProductID: " + damagereport.getProductID() +
-                        "\nLocation: " + mov.getLocation_from() + "  " +
-                        "\nTimestamp: " + damagereport.getTimestamp().format(DateTimeFormatter.ISO_DATE_TIME ) +
-                        "\nOperator: " + mov.getIn_progress_user()
-                ,
-                (String) null
-        );
+        Movement mov = movementService.getById(Long.valueOf(damagereport.getMovementID()));
+        TextArea info = new TextArea(null, "Product: " + damagereport.getProductName() + "" + "\nProductID: " + damagereport.getProductID() + "\nLocation: " + mov.getLocationFrom() + "  " + "\nTimestamp: " + damagereport.getTimestamp().format(DateTimeFormatter.ISO_DATE_TIME) + "\nOperator: " + mov.getInProgressUser(), (String) null);
         info.setWidth("300px");
         info.setReadOnly(true);
+
         Image img = imageService.generateImage(damagereport);
-        img.setHeight("200px");
-        img.setWidth("200px");
+        img.setHeight(PIXEL);
+        img.setWidth(PIXEL);
         VerticalLayout content = new VerticalLayout(info, img);
         content.addClassNames("content");
         content.setSizeFull();
@@ -98,6 +87,7 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
 
 
     private void initUploaderImage() {
+        Upload upload;
         MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
         upload = new Upload(buffer);
         upload.setAcceptedFileTypes("image/jpeg", "image/jpg", "image/png", "image/gif");
@@ -112,7 +102,7 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
                 BufferedImage inputImage = ImageIO.read(buffer.getInputStream(attachmentName));
                 ByteArrayOutputStream pngContent = new ByteArrayOutputStream();
                 ImageIO.write(inputImage, "png", pngContent);
-                saveDamagePicture(pngContent.toByteArray(), product.getName(), product.getProduct_ID(), movement);
+                saveDamagePicture(pngContent.toByteArray(), product.getName(), product.getproductId(), movement);
                 showImage();
 
             } catch (IOException e) {
@@ -127,11 +117,10 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
     private void saveDamagePicture(byte[] imageBytes, String filename, String productID, Movement movement) {
         damagereport.setProductName(filename);
         damagereport.setProductID(productID);
-        damagereport.setMovementID(movement.getMovement_ID().toString());
+        damagereport.setMovementID(movement.getMovementId().toString());
         damagereport.setImage(imageBytes);
         damagereport.setTimestamp(LocalDateTime.now());
-        damagereportServ.savereport(damagereport);
-
+        damageReportService.saveReport(damagereport);
     }
 
     private void showImage() {
@@ -139,18 +128,27 @@ public class PhotoView extends VerticalLayout implements BeforeEnterObserver {
         image.setHeight("100%");
         imageContainer.removeAll();
         imageContainer.add(image);
-
     }
 
     private void routerLink(Movement movement) {
-        UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPicking_list_ID());
-
+        try {
+            UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
+        } catch (Exception e) {
+            urlErrorHandler();
+        }
     }
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        movement = movementServ.getById(Long.valueOf(beforeEnterEvent.getRouteParameters().get("movementID").get()));
-        product = productServ.getByID(movement.getProduct_ID());
+        try {
+            Optional<String> id = beforeEnterEvent.getRouteParameters().get("movementID");
+            if (id.isPresent()) {
+                movement = movementService.getById(Long.valueOf(id.get()));
+                product = productServ.getByID(movement.getProductId());
+            }
+        } catch (Exception e) {
+            urlErrorHandler();
+        }
     }
 }
 

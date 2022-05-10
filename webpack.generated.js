@@ -25,7 +25,7 @@ const {
 const path = require('path');
 
 // this matches /themes/my-theme/ and is used to check css url handling and file path build.
-const themePartRegex = /(\\|\/)themes\1[\s\S]*?\1/;
+const themePartRegex = /[\\|\/]themes\1[\s\S]*?\1/;
 
 // the folder of app resources:
 //  - flow templates for classic Flow
@@ -37,7 +37,7 @@ const mavenOutputFolderForFlowBundledFiles = path.resolve(__dirname, 'target/cla
 const mavenOutputFolderForResourceFiles = path.resolve(__dirname, 'target/classes/META-INF/VAADIN');
 const useClientSideIndexFileForBootstrapping = true;
 const clientSideIndexHTML = './index.html';
-const clientSideIndexEntryPoint = path.resolve(__dirname, 'frontend', 'generated/', 'vaadin.ts');;
+const clientSideIndexEntryPoint = path.resolve(__dirname, 'frontend', 'generated/', 'vaadin.ts');
 const pwaEnabled = true;
 const offlinePath = 'offline.html';
 const clientServiceWorkerEntryPoint = path.resolve(__dirname, 'target/sw');
@@ -136,7 +136,6 @@ const swManifestTransform = (manifestEntries) => {
     // it's not served as-is directly from the webpack output at `/index.html`.
     // It goes through IndexHtmlRequestHandler and is served at `/`.
     //
-    // TODO: calculate the revision based on the IndexHtmlRequestHandler-processed content
     // of the index.html file
     const indexEntryIdx = manifest.findIndex((entry) => entry.url === 'index.html');
     if (indexEntryIdx !== -1) {
@@ -193,7 +192,7 @@ if (devMode) {
   ];
   // Watch the components folders for component styles update in both
   // current theme and parent themes. Other folders or CSS files except
-  // 'styles.css' should be referenced from `styles.css` anyway, so no need
+  // 'portalpagestyles.css' should be referenced from `portalpagestyles.css` anyway, so no need
   // to watch them.
   themeWatchFolders = [...currentThemeFolders, ...parentThemePaths].map((themeFolder) =>
     path.resolve(themeFolder, 'components')
@@ -274,7 +273,7 @@ module.exports = {
             options: {
               url: (url, resourcePath) => {
                 // Only translate files from node_modules
-                const resolve = resourcePath.match(/(\\|\/)node_modules\1/);
+                const resolve = resourcePath.match(/[\\|\/]node_modules\1/);
                 const themeResource = resourcePath.match(themePartRegex) && url.match(/^themes\/[\s\S]*?\//);
                 return resolve || themeResource;
               },
@@ -301,11 +300,11 @@ module.exports = {
             options: {
               outputPath: 'VAADIN/static/',
               name(resourcePath, resourceQuery) {
-                if (resourcePath.match(/(\\|\/)node_modules\1/)) {
-                  return /(\\|\/)node_modules\1(?!.*node_modules)([\S]+)/.exec(resourcePath)[2].replace(/\\/g, '/');
+                if (resourcePath.match(/[\\|\/]node_modules\1/)) {
+                  return /[\\|\/]node_modules\1(?!.*node_modules)([\S]+)/.exec(resourcePath)[2].replace(/\\/g, '/');
                 }
-                if (resourcePath.match(/(\\|\/)flow-frontend\1/)) {
-                  return /(\\|\/)flow-frontend\1(?!.*flow-frontend)([\S]+)/.exec(resourcePath)[2].replace(/\\/g, '/');
+                if (resourcePath.match(/[\\|\/]flow-frontend\1/)) {
+                  return /[\\|\/]flow-frontend\1(?!.*flow-frontend)([\S]+)/.exec(resourcePath)[2].replace(/\\/g, '/');
                 }
                 return '[path][name].[ext]';
               }

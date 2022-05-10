@@ -1,11 +1,12 @@
 package com.essers.wms.movement.data.service;
 
 import com.essers.wms.movement.data.entity.Company;
-import com.essers.wms.movement.data.entity.Pickinglist;
 
 import java.util.List;
 
-public interface CompanyServ {
+
+public interface CompanyService {
     List<Company> getAll();
-    Company getById(Long Id);
+
+    Company getById(Long id);
 }

@@ -11,17 +11,17 @@ import com.vaadin.flow.router.Route;
 
 @Route("login")
 @PageTitle("Login")
-public class LoginView extends VerticalLayout implements BeforeEnterObserver {
+public final class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     private final LoginForm login = new LoginForm();
 
-    public LoginView(){
+    public LoginView() {
         addClassName("login-view");
         setSizeFull();
         setAlignItems(FlexComponent.Alignment.CENTER);
         setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
         login.setAction("login");
-        Image logo= new Image("images/logo.png", "img");
+        Image logo = new Image("images/logo.png", "img");
         logo.setWidth("350px");
         add(logo, login);
     }
@@ -29,10 +29,7 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
         // inform the user about an authentication error
-        if(beforeEnterEvent.getLocation()
-                .getQueryParameters()
-                .getParameters()
-                .containsKey("error")) {
+        if (beforeEnterEvent.getLocation().getQueryParameters().getParameters().containsKey("error")) {
             login.setError(true);
         }
     }

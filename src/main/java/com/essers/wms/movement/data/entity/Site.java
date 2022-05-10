@@ -1,15 +1,10 @@
 package com.essers.wms.movement.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-@Data
+import java.io.Serializable;
+
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-public class Site {
+public class Site implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,5 +13,25 @@ public class Site {
 
     public Site(String s) {
         this.name=s;
+    }
+
+    public Site() {
+
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

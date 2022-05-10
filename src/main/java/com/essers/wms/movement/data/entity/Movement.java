@@ -1,38 +1,32 @@
 package com.essers.wms.movement.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-//@Transactional
-public class Movement {
+public class Movement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movement_ID;
-    private String wms_company;
-    private String wms_site;
-    private String wms_warehouse;
-    private Movementtype movement_type;
+    private Long movementId;
+    private String wmsCompany;
+    private String wmsSite;
+    private String wmsWarehouse;
+    private Movementtype movementType;
     private String priority;
-    private String product_ID;
-    private String supplier_ID;
+    private String productId;
+    private String supplierId;
     private Integer quantity;
     private String uom;
-    private String location_from;
-    private String location_to;
-    private LocalDateTime in_progress_timestamp;
-    private String in_progress_user;
+    private String locationFrom;
+    private String locationTo;
+    private LocalDateTime inProgressTimestamp;
+    private String inProgressUser;
     private String location;
     private String state;
-    private String handled_user;
+    private String handledUser;
     private String palleteNummer;
 
     @ManyToOne
@@ -40,78 +34,46 @@ public class Movement {
     private Pickinglist pickinglist;
 
     @ManyToMany
-    private List<Stock> stock=new ArrayList<>();
+    private List<Stock> stock = new ArrayList<>();
 
-    public Long getMovement_ID() {
-        return movement_ID;
+    public Long getMovementId() {
+        return movementId;
     }
 
-    public void setMovement_ID(Long movement_ID) {
-        this.movement_ID = movement_ID;
+    public void setMovementId(Long movementId) {
+        this.movementId = movementId;
     }
 
-    public String getPalleteNummer() {
-        return palleteNummer;
+    public String getWmsCompany() {
+        return wmsCompany;
     }
 
-    public void setPalleteNummer(String palleteNummer) {
-        this.palleteNummer = palleteNummer;
+    public void setWmsCompany(String wmsCompany) {
+        this.wmsCompany = wmsCompany;
     }
 
-    public String getHandled_user() {
-        return handled_user;
+    public String getWmsSite() {
+        return wmsSite;
     }
 
-    public void setHandled_user(String handled_user) {
-        this.handled_user = handled_user;
+    public void setWmsSite(String wmsSite) {
+        this.wmsSite = wmsSite;
     }
 
-    public String getState() {
-        return state;
+    public String getWmsWarehouse() {
+        return wmsWarehouse;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setWmsWarehouse(String wmsWarehouse) {
+        this.wmsWarehouse = wmsWarehouse;
     }
 
-    public String getLocation() {
-        return location;
+    public Movementtype getMovementType() {
+        return movementType;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getWms_company() {
-        return wms_company;
-    }
-
-    public void setWms_company(String wms_company) {
-        this.wms_company = wms_company;
-    }
-
-    public String getWms_site() {
-        return wms_site;
-    }
-
-    public void setWms_site(String wms_site) {
-        this.wms_site = wms_site;
-    }
-
-    public String getWms_warehouse() {
-        return wms_warehouse;
-    }
-
-    public void setWms_warehouse(String wms_warehouse) {
-        this.wms_warehouse = wms_warehouse;
-    }
-
-    public Movementtype getMovement_type() {
-        return movement_type;
-    }
-
-    public void setMovement_type(Movementtype movement_type) {
-        this.movement_type = movement_type;
+    public void setMovementType(Movementtype movementType) {
+        this.movementType = movementType;
     }
 
     public String getPriority() {
@@ -122,20 +84,20 @@ public class Movement {
         this.priority = priority;
     }
 
-    public String getProduct_ID() {
-        return product_ID;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct_ID(String product_ID) {
-        this.product_ID = product_ID;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-    public String getSupplier_ID() {
-        return supplier_ID;
+    public String getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplier_ID(String supplier_ID) {
-        this.supplier_ID = supplier_ID;
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
     }
 
     public Integer getQuantity() {
@@ -154,36 +116,68 @@ public class Movement {
         this.uom = uom;
     }
 
-    public String getLocation_from() {
-        return location_from;
+    public String getLocationFrom() {
+        return locationFrom;
     }
 
-    public void setLocation_from(String location_from) {
-        this.location_from = location_from;
+    public void setLocationFrom(String locationFrom) {
+        this.locationFrom = locationFrom;
     }
 
-    public String getLocation_to() {
-        return location_to;
+    public String getLocationTo() {
+        return locationTo;
     }
 
-    public void setLocation_to(String location_to) {
-        this.location_to = location_to;
+    public void setLocationTo(String locationTo) {
+        this.locationTo = locationTo;
     }
 
-    public LocalDateTime getIn_progress_timestamp() {
-        return in_progress_timestamp;
+    public LocalDateTime getInProgressTimestamp() {
+        return inProgressTimestamp;
     }
 
-    public void setIn_progress_timestamp(LocalDateTime in_progress_timestamp) {
-        this.in_progress_timestamp = in_progress_timestamp;
+    public void setInProgressTimestamp(LocalDateTime inProgressTimestamp) {
+        this.inProgressTimestamp = inProgressTimestamp;
     }
 
-    public String getIn_progress_user() {
-        return in_progress_user;
+    public String getInProgressUser() {
+        return inProgressUser;
     }
 
-    public void setIn_progress_user(String in_progress_user) {
-        this.in_progress_user = in_progress_user;
+    public void setInProgressUser(String inProgressUser) {
+        this.inProgressUser = inProgressUser;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getHandledUser() {
+        return handledUser;
+    }
+
+    public void setHandledUser(String handledUser) {
+        this.handledUser = handledUser;
+    }
+
+    public String getPalleteNummer() {
+        return palleteNummer;
+    }
+
+    public void setPalleteNummer(String palleteNummer) {
+        this.palleteNummer = palleteNummer;
     }
 
     public Pickinglist getPickinglist() {
@@ -200,16 +194,5 @@ public class Movement {
 
     public void setStock(List<Stock> stock) {
         this.stock = stock;
-    }
-
-    public int getStock(String product_ID){
-        int stocks=0;
-        for (Stock s: getStock()
-             ) {
-                    if(s.getProductID().equals(product_ID) && s.getLocation().equals(getLocation())){
-                        stocks=s.getQuantity();
-            }
-        }
-        return stocks;
     }
 }

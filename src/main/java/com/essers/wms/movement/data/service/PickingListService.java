@@ -4,12 +4,13 @@ import com.essers.wms.movement.data.entity.Company;
 import com.essers.wms.movement.data.entity.Pickinglist;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface PickinglistServ {
+public interface PickingListService {
     List<Pickinglist> getAll();
-    Pickinglist getById(Long Id);
+
+    Pickinglist getById(Long id);
+
     List<Pickinglist> getByCompany(Company company);
 
-    void save(Pickinglist pl);
+    void save(Pickinglist pickinglist);
 }

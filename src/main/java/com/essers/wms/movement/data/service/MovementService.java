@@ -5,9 +5,9 @@ import com.essers.wms.movement.data.entity.Pickinglist;
 
 import java.util.List;
 
-public interface MovementServ {
+public interface MovementService {
     List<Movement> getAll();
-    Movement getById(Long Id);
+    Movement getById(Long id);
     List<Movement>getByPickinglist(Pickinglist pickinglist);
     void remove(Movement movement);
 
