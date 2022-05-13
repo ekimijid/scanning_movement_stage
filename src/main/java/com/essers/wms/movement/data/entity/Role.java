@@ -16,6 +16,15 @@ public class Role implements Serializable {
     @ManyToOne
     private User user;
 
+    public Role(Long id, User user, String name) {
+        this.id = id;
+        this.user = user;
+        this.name = name;
+    }
+
+    public Role() {
+    }
+
     public Long getId() {
         return id;
     }

@@ -13,6 +13,15 @@ public class Company implements Serializable {
     private Long id;
     private String name;
 
+    public Company(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public Company() {
+
+    }
+
     public Long getId() {
         return id;
     }

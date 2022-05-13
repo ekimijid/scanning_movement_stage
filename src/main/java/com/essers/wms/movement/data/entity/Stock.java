@@ -15,6 +15,16 @@ public class Stock implements Serializable {
     private String location;
     private String productId;
 
+    public Stock(Long id, Integer quantity, String location, String productId) {
+        this.id = id;
+        this.quantity = quantity;
+        this.location = location;
+        this.productId = productId;
+    }
+
+    public Stock() {
+    }
+
     public Long getId() {
         return id;
     }

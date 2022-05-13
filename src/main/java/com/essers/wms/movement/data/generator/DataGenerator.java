@@ -1,7 +1,25 @@
 package com.essers.wms.movement.data.generator;
 
-import com.essers.wms.movement.data.entity.*;
-import com.essers.wms.movement.data.repository.*;
+import com.essers.wms.movement.data.entity.Company;
+import com.essers.wms.movement.data.entity.Movement;
+import com.essers.wms.movement.data.entity.Movementtype;
+import com.essers.wms.movement.data.entity.Pickinglist;
+import com.essers.wms.movement.data.entity.Product;
+import com.essers.wms.movement.data.entity.Role;
+import com.essers.wms.movement.data.entity.Site;
+import com.essers.wms.movement.data.entity.Stock;
+import com.essers.wms.movement.data.entity.Supplier;
+import com.essers.wms.movement.data.entity.User;
+import com.essers.wms.movement.data.entity.Warehouse;
+import com.essers.wms.movement.data.repository.CompanyRepository;
+import com.essers.wms.movement.data.repository.MovementRepository;
+import com.essers.wms.movement.data.repository.PickinglistRepository;
+import com.essers.wms.movement.data.repository.ProductRepository;
+import com.essers.wms.movement.data.repository.RoleRepository;
+import com.essers.wms.movement.data.repository.SiteRepository;
+import com.essers.wms.movement.data.repository.StockRepository;
+import com.essers.wms.movement.data.repository.UserRepository;
+import com.essers.wms.movement.data.repository.WarehouseRepository;
 import com.vaadin.exampledata.DataType;
 import com.vaadin.exampledata.ExampleDataGenerator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -26,12 +44,25 @@ public class DataGenerator {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
-
+    @Autowired
+    MovementRepository movementRepository;
+    @Autowired
+    PickinglistRepository pickinglistRepository;
+    @Autowired
+    StockRepository stockRepository;
+    @Autowired
+    ProductRepository productRepository;
+    @Autowired
+    CompanyRepository companyRepository;
+    @Autowired
+    WarehouseRepository warehouseRepository;
+    @Autowired
+    SiteRepository siteRepository;
     private final Random random = new Random();
 
 
     @Bean
-    public CommandLineRunner loadData(MovementRepository movementRepository, PickinglistRepository pickinglistRepository, StockRepository stockRepository, ProductRepository productRepository, CompanyRepository companyRepository, WarehouseRepository warehouseRepository, SiteRepository siteRepository) {
+    public CommandLineRunner loadData() {
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
             int seed = 123;

@@ -21,6 +21,17 @@ public class Product implements Serializable {
     private String location;
     private String description;
 
+    public Product(String productId, Pickinglist pickinglist, String name, String location, String description) {
+        this.productId = productId;
+        this.pickinglist = pickinglist;
+        this.name = name;
+        this.location = location;
+        this.description = description;
+    }
+
+    public Product() {
+    }
+
     public String getproductId() {
         return productId;
     }

@@ -20,6 +20,16 @@ public class User implements Serializable {
     private String password;
     private String userName;
 
+    public User(Long id, String password, String userName, Collection<Role> roles) {
+        this.id = id;
+        this.password = password;
+        this.userName = userName;
+        this.roles = roles;
+    }
+
+    public User() {
+    }
+
     @OneToMany(fetch = EAGER, mappedBy = "user")
     private Collection<Role> roles = new ArrayList<>();
 

@@ -2,13 +2,11 @@ package com.essers.wms.movement;
 
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.theme.Theme;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@Theme(value="wmscss")
 @PWA(name = "Scanner WMS", shortName = "WMS", offlinePath = "offline.html", offlineResources = {"images/logo.png", "images/offlinelogo.png"})
 public class MovementApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
