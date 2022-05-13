@@ -30,7 +30,6 @@ public class PickingListServiceImplementation implements PickingListService, Ser
     public List<Pickinglist> getByCompany(Company company) {
         return pickinglistRepository.getPickinglistsByCompany(company);
     }
-
     @Override
     public void save(Pickinglist pickinglist) {
         pickinglistRepository.save(pickinglist);

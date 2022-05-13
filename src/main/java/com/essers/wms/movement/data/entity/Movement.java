@@ -1,10 +1,17 @@
 package com.essers.wms.movement.data.entity;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 
 @Entity
 public class Movement implements Serializable {
@@ -29,6 +36,7 @@ public class Movement implements Serializable {
     private String handledUser;
     private String palleteNummer;
 
+    @Valid
     @ManyToOne
     @JoinColumn(name = "picking_list_ID")
     private Pickinglist pickinglist;
@@ -195,4 +203,5 @@ public class Movement implements Serializable {
     public void setStock(List<Stock> stock) {
         this.stock = stock;
     }
+
 }

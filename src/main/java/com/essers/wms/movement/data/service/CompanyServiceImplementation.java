@@ -9,6 +9,7 @@ import java.util.List;
 
 @Service
 public class CompanyServiceImplementation implements CompanyService {
+
     @Autowired
     CompanyRepository companyRepository;
 

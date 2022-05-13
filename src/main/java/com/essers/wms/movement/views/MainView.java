@@ -14,9 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
-
 import java.util.List;
-
 
 public class MainView extends AppLayout {
 
@@ -30,7 +28,7 @@ public class MainView extends AppLayout {
         createDrawer();
     }
 
-    private void createHeader() {
+    protected void createHeader() {
         H1 logo = new H1("WMS Scanner");
         logo.getStyle().set("font-size", "var(--lumo-font-size-l)").set("color", "blue").set("font-weight", "bold").set("margin", "var(--lumo-space-m) var(--lumo-space-l)");
         Button logout = new Button("Log out", e -> {
@@ -50,7 +48,7 @@ public class MainView extends AppLayout {
 
     }
 
-    private void createDrawer() {
+    protected void createDrawer() {
         RouterLink listLink = new RouterLink("Home", PortalView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
         VerticalLayout layout = new VerticalLayout(listLink);
@@ -60,7 +58,7 @@ public class MainView extends AppLayout {
         addToDrawer(layout);
     }
 
-    private void movementsStatusChange() {
+    protected void movementsStatusChange() {
         List<Movement> movements = movementService.getAll();
         for (Movement mov : movements) {
             if (mov.getState().equals("in_process") && (mov.getInProgressUser().equals(securityService.getAuthenticatedUser().getUsername()))) {

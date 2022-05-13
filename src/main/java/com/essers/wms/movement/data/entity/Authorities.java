@@ -1,10 +1,10 @@
 package com.essers.wms.movement.data.entity;
 
-import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 public final class Authorities implements GrantedAuthority {
@@ -12,14 +12,10 @@ public final class Authorities implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String authority;
+    private String authority;
 
     @Override
     public String getAuthority() {
         return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
     }
 }

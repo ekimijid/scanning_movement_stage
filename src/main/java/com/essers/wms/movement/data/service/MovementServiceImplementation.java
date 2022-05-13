@@ -11,14 +11,11 @@ import java.util.List;
 @Service
 public class MovementServiceImplementation implements MovementService {
 
-
     @Autowired
     private MovementRepository movementRepository;
 
     @Override
     public List<Movement> getAll() {
-
-
         return movementRepository.findAll();
     }
 
@@ -35,7 +32,6 @@ public class MovementServiceImplementation implements MovementService {
     @Override
     public void remove(Movement movement) {
         movementRepository.delete(movement);
-
     }
 
     @Override

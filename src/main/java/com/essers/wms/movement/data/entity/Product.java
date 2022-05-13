@@ -1,16 +1,21 @@
 package com.essers.wms.movement.data.entity;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.io.Serializable;
+import javax.validation.Valid;
 
 @Entity
 public class Product implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String productId;
 
+    @Valid
     @ManyToOne()
     @JoinColumn(name = "picking_list_ID")
     private Pickinglist pickinglist;
