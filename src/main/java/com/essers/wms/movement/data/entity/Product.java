@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 
@@ -17,7 +16,6 @@ public class Product implements Serializable {
 
     @Valid
     @ManyToOne()
-    @JoinColumn(name = "picking_list_ID")
     private Pickinglist pickinglist;
     private String name;
     private String location;
