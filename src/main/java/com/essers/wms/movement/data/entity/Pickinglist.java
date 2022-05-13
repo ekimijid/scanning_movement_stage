@@ -12,7 +12,6 @@ import java.util.List;
 
 
 @Entity
-
 public class Pickinglist implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +24,7 @@ public class Pickinglist implements Serializable {
     private Site wmsSite;
 
     @OneToOne
-    private  Warehouse wmsWarehouse;
+    private Warehouse wmsWarehouse;
 
     @OneToMany(mappedBy = "pickinglist")
     private List<Product> product = new ArrayList<>();

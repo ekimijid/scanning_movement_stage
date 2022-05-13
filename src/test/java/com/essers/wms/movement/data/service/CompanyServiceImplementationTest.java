@@ -28,12 +28,6 @@ class CompanyServiceImplementationTest {
     }
 
     @Test
-    void getAll() {
-
-        Assert.assertEquals(50, companyService.getAll().size());
-    }
-
-    @Test
     void getById() {
 
         Assert.assertEquals(testDataBuilder.getCompany().getName(), companyService.getById(testDataBuilder.getCompany().getId()).getName());
