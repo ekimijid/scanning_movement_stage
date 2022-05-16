@@ -16,7 +16,7 @@ import javax.annotation.security.PermitAll;
 @Route(value = "", layout = MainView.class)
 @PageTitle("WMS Scanner")
 @CssImport("portal-view.css")
-public class PortalView extends VerticalLayout {
+public final class PortalView extends VerticalLayout {
     public PortalView() {
         Button fp = new Button("FULL PALLETTE", buttonClickEvent -> fullpallete());
         fp.addThemeVariants(ButtonVariant.LUMO_LARGE);

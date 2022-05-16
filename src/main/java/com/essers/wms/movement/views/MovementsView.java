@@ -30,7 +30,7 @@ import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
 @PermitAll
 @Route(value = "movements/:pickinglistID", layout = MainView.class)
 @PageTitle("Movements")
-public class MovementsView extends VerticalLayout implements BeforeEnterObserver {
+public final class MovementsView extends VerticalLayout implements BeforeEnterObserver {
     private static final Logger LOGGER=Logger.getLogger("InfoLogging");
     private final transient PickingListService pickingListService;
     private final transient MovementService movementService;
@@ -91,7 +91,7 @@ public class MovementsView extends VerticalLayout implements BeforeEnterObserver
         HorizontalLayout layout2 = new HorizontalLayout(locIcon1, to);
 
         VerticalLayout content = new VerticalLayout(info, layout, layout1, layout2, scanButton);
-        content.getStyle().set("font-size", "var(--lumo-font-size-l)").set("font-weight", "bold").set("margin", "var(--lumo-space-m) var(--lumo-space-l)");
+        content.getStyle().set("font-size", "14px").set("font-weight", "bold").set("margin", "1px, 1.5px");
         content.setSizeFull();
         content.addClassNames("content");
         return content;

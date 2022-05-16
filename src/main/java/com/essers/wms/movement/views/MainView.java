@@ -17,7 +17,7 @@ import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import java.util.List;
 
-public class MainView extends AppLayout {
+public final class MainView extends AppLayout {
 
     private final transient SecurityService securityService;
     private final transient MovementService movementService;
@@ -31,7 +31,7 @@ public class MainView extends AppLayout {
 
     protected void createHeader() {
         H1 logo = new H1("WMS Scanner");
-        logo.getStyle().set("font-size", "var(--lumo-font-size-l)").set("color", "blue").set("font-weight", "bold").set("margin", "var(--lumo-space-m) var(--lumo-space-l)");
+        logo.getStyle().set("font-size", "20px").set("color", "blue").set("font-weight", "bold").set("margin", "10,10");
         Button logout = new Button("Log out", e -> {
             movementsStatusChange();
             securityService.logout();
@@ -55,14 +55,15 @@ public class MainView extends AppLayout {
         VerticalLayout layout = new VerticalLayout(listLink);
         layout.setWidth("20px");
 
-        layout.getStyle().set("font-size", "var(--lumo-font-size-l)").set("font-weight", "bold").set("text-decoration", "underline").set("margin", "var(--lumo-space-m) var(--lumo-space-l)");
+        layout.getStyle().set("font-size", "20px").set("font-weight", "bold");
         addToDrawer(layout);
     }
 
     protected void movementsStatusChange() {
         List<Movement> movements = movementService.getAll();
+        String username=securityService.getAuthenticatedUser().getUsername();
         for (Movement mov : movements) {
-            if (mov.getState().equals(State.IN_PROCESS) && (mov.getInProgressUser().equals(securityService.getAuthenticatedUser().getUsername()))) {
+            if (mov.getState().equals(State.IN_PROCESS) && (mov.getInProgressUser().equals(username))) {
                 mov.setState(State.PICK);
                 mov.setInProgressUser(null);
                 movementService.save(mov);

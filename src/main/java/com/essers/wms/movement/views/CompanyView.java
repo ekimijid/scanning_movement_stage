@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @PermitAll
 @Route(value = "company", layout = MainView.class)
 @PageTitle("CompanyList")
-public class CompanyView extends VerticalLayout {
+public final class CompanyView extends VerticalLayout {
 
     private final transient PickingListService pickingListService;
     protected ComboBox<Company> companyComboBox;

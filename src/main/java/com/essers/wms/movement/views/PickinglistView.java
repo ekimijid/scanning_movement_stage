@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @PermitAll
 @Route(value = "pickinglist/:companyID", layout = MainView.class)
 @PageTitle("PickingList")
-public class PickinglistView extends VerticalLayout implements BeforeEnterObserver {
+public final class PickinglistView extends VerticalLayout implements BeforeEnterObserver {
     private static final Logger LOGGER=Logger.getLogger("InfoLogging");
     protected Grid<Pickinglist> grid = new Grid<>(Pickinglist.class);
     private final transient PickingListService pickingListService;
