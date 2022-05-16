@@ -27,7 +27,7 @@ import org.springframework.stereotype.Component;
 @PageTitle("PickingList")
 public final class PickinglistView extends VerticalLayout implements BeforeEnterObserver {
     private static final Logger LOGGER=Logger.getLogger("InfoLogging");
-    protected Grid<Pickinglist> grid = new Grid<>(Pickinglist.class);
+    Grid<Pickinglist> grid = new Grid<>(Pickinglist.class);
     private final transient PickingListService pickingListService;
     private final transient CompanyService companyService;
     private Company company;
@@ -49,7 +49,7 @@ public final class PickinglistView extends VerticalLayout implements BeforeEnter
         grid.asSingleSelect().addValueChangeListener(event -> routerLink(event.getValue()));
     }
 
-    protected void updateList() {
+    private void updateList() {
         grid.setItems(pickingListService.getByCompany(company));
     }
 
@@ -61,7 +61,7 @@ public final class PickinglistView extends VerticalLayout implements BeforeEnter
         return content;
     }
 
-    protected void routerLink(Pickinglist value) {
+    private static void routerLink(Pickinglist value) {
         try {
             UI.getCurrent().navigate("movements/" + value.getPickingListId());
         } catch (NotFoundException e) {

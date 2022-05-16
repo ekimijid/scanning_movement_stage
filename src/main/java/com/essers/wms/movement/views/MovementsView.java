@@ -48,7 +48,7 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
     }
 
 
-    public void routerLinkBack(Pickinglist pickinglist) {
+    private static void routerLinkBack(Pickinglist pickinglist) {
         try {
             UI.getCurrent().navigate("pickinglist/" + pickinglist.getCompany().getId());
 
@@ -114,7 +114,7 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
         }
     }
 
-    public void routerLink(Movement value) {
+    private static void routerLink(Movement value) {
         try {
             UI.getCurrent().navigate("scanner/" + value.getMovementId());
         } catch (NotFoundException e) {

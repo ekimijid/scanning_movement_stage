@@ -22,8 +22,9 @@ import org.springframework.stereotype.Component;
 public final class CompanyView extends VerticalLayout {
 
     private final transient PickingListService pickingListService;
-    protected ComboBox<Company> companyComboBox;
-    protected Button button;
+
+    ComboBox<Company> companyComboBox;
+    Button button;
 
     public CompanyView(CompanyService companyService, PickingListService pickingListService) {
         this.pickingListService = pickingListService;

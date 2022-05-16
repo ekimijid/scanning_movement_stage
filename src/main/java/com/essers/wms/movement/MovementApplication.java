@@ -12,7 +12,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
         MultipartAutoConfiguration.class,
         JmxAutoConfiguration.class,
 })
-@PWA(name = "Scanner WMS", shortName = "WMS", offlinePath = "offline.html", offlineResources = {"images/offlinelogo.png"})
+@PWA(name = "WMS", shortName = "WMS", offlinePath = "off.html", offlineResources = {"images/off.png"})
 public class MovementApplication extends SpringBootServletInitializer implements AppShellConfigurator {
 
     public static void main(String[] args) {

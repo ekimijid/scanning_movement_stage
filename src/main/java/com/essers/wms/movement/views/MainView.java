@@ -29,7 +29,7 @@ public final class MainView extends AppLayout {
         this.createDrawer();
     }
 
-    protected void createHeader() {
+    private void createHeader() {
         H1 logo = new H1("WMS Scanner");
         logo.getStyle().set("font-size", "20px").set("color", "blue").set("font-weight", "bold").set("margin", "10,10");
         Button logout = new Button("Log out", e -> {
@@ -49,7 +49,7 @@ public final class MainView extends AppLayout {
 
     }
 
-    protected void createDrawer() {
+    private void createDrawer() {
         RouterLink listLink = new RouterLink("Home", PortalView.class);
         listLink.setHighlightCondition(HighlightConditions.sameLocation());
         VerticalLayout layout = new VerticalLayout(listLink);
@@ -59,11 +59,11 @@ public final class MainView extends AppLayout {
         addToDrawer(layout);
     }
 
-    protected void movementsStatusChange() {
+    private void movementsStatusChange() {
         List<Movement> movements = movementService.getAll();
         String username=securityService.getAuthenticatedUser().getUsername();
         for (Movement mov : movements) {
-            if (mov.getState().equals(State.IN_PROCESS) && (mov.getInProgressUser().equals(username))) {
+            if (mov.getState()==State.IN_PROCESS && (mov.getInProgressUser().equals(username))) {
                 mov.setState(State.PICK);
                 mov.setInProgressUser(null);
                 movementService.save(mov);
