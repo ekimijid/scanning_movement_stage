@@ -1,6 +1,7 @@
 package com.essers.wms.movement.views;
 
 import com.essers.wms.movement.data.entity.Movement;
+import com.essers.wms.movement.data.entity.State;
 import com.essers.wms.movement.data.service.MovementService;
 import com.essers.wms.movement.security.SecurityService;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -61,8 +62,8 @@ public class MainView extends AppLayout {
     protected void movementsStatusChange() {
         List<Movement> movements = movementService.getAll();
         for (Movement mov : movements) {
-            if (mov.getState().equals("in_process") && (mov.getInProgressUser().equals(securityService.getAuthenticatedUser().getUsername()))) {
-                mov.setState("pick");
+            if (mov.getState().equals(State.IN_PROCESS) && (mov.getInProgressUser().equals(securityService.getAuthenticatedUser().getUsername()))) {
+                mov.setState(State.PICK);
                 mov.setInProgressUser(null);
                 movementService.save(mov);
             }

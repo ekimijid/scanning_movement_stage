@@ -77,7 +77,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             alertbutton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
 
             movement.setInProgressUser(securityService.getAuthenticatedUser().getUsername());
-            movement.setState(State.IN_PROCESS.name());
+            movement.setState(State.IN_PROCESS);
             movementService.save(movement);
 
             TextArea info = new TextArea(null, product.getName().toUpperCase() + "\n" + product.getDescription(), (String) null);
@@ -122,7 +122,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
 
     public void updatePickinglist(Movement movement, String string) {
         if (movement.getLocation().equals(string)) {
-            movement.setState(State.PICKED.name());
+            movement.setState(State.PICKED);
             movement.setInProgressUser("");
             movement.setHandledUser(securityService.getAuthenticatedUser().getUsername());
             movement.setInProgressTimestamp(LocalDateTime.now());

@@ -8,6 +8,7 @@ import com.essers.wms.movement.data.entity.Pickinglist;
 import com.essers.wms.movement.data.entity.Product;
 import com.essers.wms.movement.data.entity.Role;
 import com.essers.wms.movement.data.entity.Site;
+import com.essers.wms.movement.data.entity.State;
 import com.essers.wms.movement.data.entity.Stock;
 import com.essers.wms.movement.data.entity.Supplier;
 import com.essers.wms.movement.data.entity.User;
@@ -78,7 +79,7 @@ public final class TestDataBuilder {
 
         this.movement = new Movement();
         this.movement.setInProgressUser(this.user.getUserName());
-        this.movement.setState("pick");
+        this.movement.setState(State.PICK);
         this.movement.setInProgressTimestamp(LocalDateTime.now());
         this.movement.setPalleteNummer("0000");
         this.movement.setLocation("1111");

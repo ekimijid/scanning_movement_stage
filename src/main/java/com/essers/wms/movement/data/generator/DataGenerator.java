@@ -21,10 +21,10 @@ import com.essers.wms.movement.data.repository.SiteRepository;
 import com.essers.wms.movement.data.repository.StockRepository;
 import com.essers.wms.movement.data.repository.UserRepository;
 import com.essers.wms.movement.data.repository.WarehouseRepository;
-import com.helger.commons.annotation.VisibleForTesting;
 import com.vaadin.exampledata.DataType;
 import com.vaadin.exampledata.ExampleDataGenerator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
+import java.security.SecureRandom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Stream;
 
 @SpringComponent
@@ -72,7 +71,7 @@ public class DataGenerator {
     @Autowired
     private SiteRepository siteRepository;
 
-    private final Random random = new Random();
+    private final SecureRandom random = new SecureRandom();
 
 
     @Bean
@@ -153,7 +152,7 @@ public class DataGenerator {
                     movement.setUom(pl.getUom());
                     movement.setWmsCompany(pl.getCompany().getName());
                     movement.setProductId(p.getproductId());
-                    movement.setState(State.PICK.name());
+                    movement.setState(State.PICK);
                     movement.setPalleteNummer("03600029145");
                     movements.add(movement);
                 }

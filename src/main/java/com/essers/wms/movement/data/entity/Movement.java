@@ -31,7 +31,7 @@ public class Movement implements Serializable {
     private LocalDateTime inProgressTimestamp;
     private String inProgressUser;
     private String location;
-    private String state;
+    private State state;
     private String handledUser;
     private String palleteNummer;
 
@@ -162,11 +162,11 @@ public class Movement implements Serializable {
         this.location = location;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 
