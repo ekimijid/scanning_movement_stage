@@ -39,6 +39,16 @@ public class Pickinglist implements Serializable {
     @OneToMany(mappedBy = "pickinglist")
     private List<Movement> movements;
 
+    public Pickinglist(Long pickingListId, String uom, String location) {
+        this.pickingListId = pickingListId;
+        this.uom = uom;
+        this.location = location;
+    }
+
+    public Pickinglist() {
+
+    }
+
     public Long getPickingListId() {
         return pickingListId;
     }

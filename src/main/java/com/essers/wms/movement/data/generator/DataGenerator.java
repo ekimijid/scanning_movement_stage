@@ -39,7 +39,11 @@ import java.util.stream.Stream;
 
 @SpringComponent
 public class DataGenerator {
-    public static final int NUMBER_OF_CYCLES = 40;
+    private static final int NUMBER_OF_CYCLES = 40;
+    private static final  Logger logger = LoggerFactory.getLogger(DataGenerator.class);
+    private static final int SEED = 123;
+    private static final int RANDOM_GETAL = 9;
+    private static final int STOCK = 2;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -77,8 +81,8 @@ public class DataGenerator {
     @Bean
     public CommandLineRunner loadData() {
         return args -> {
-            Logger logger = LoggerFactory.getLogger(getClass());
-            int seed = 123;
+
+
             logger.info("Generating demo data");
 
             List<Role> roles = new ArrayList<>();
@@ -104,11 +108,11 @@ public class DataGenerator {
             productExampleDataGenerator.setData(Product::setName, DataType.WORD);
             productExampleDataGenerator.setData(Product::setLocation, DataType.WORD);
             productExampleDataGenerator.setData(Product::setDescription, DataType.SENTENCE);
-            List<Product> products = productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES, seed));
+            List<Product> products = productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
 
             ExampleDataGenerator<Company> companyExampleDataGenerator = new ExampleDataGenerator<>(Company.class, LocalDateTime.now());
             companyExampleDataGenerator.setData(Company::setName, DataType.COMPANY_NAME);
-            List<Company> companies = companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES, seed));
+            List<Company> companies = companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
 
             List<Warehouse> warehouses = warehouseRepository.saveAll(Stream.of("WH10", "WH11", "WH12").map(Warehouse::new).toList());
 
@@ -119,8 +123,8 @@ public class DataGenerator {
             ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class, LocalDateTime.now());
             pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_10);
             pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD);
-            List<Pickinglist> pickinglists = pickinglistGenerator.create(NUMBER_OF_CYCLES, seed).stream().map(plist -> {
-                plist.setProduct(random.ints(9, 0, products.size()).mapToObj(products::get).toList());
+            List<Pickinglist> pickinglists = pickinglistGenerator.create(NUMBER_OF_CYCLES, SEED).stream().map(plist -> {
+                plist.setProduct(random.ints(RANDOM_GETAL, 0, products.size()).mapToObj(products::get).toList());
                 plist.setCompany(companies.get(random.nextInt(companyRepository.findAll().size())));
                 plist.setWmsSite(sites.get(random.nextInt(siteRepository.findAll().size())));
                 plist.setWmsWarehouse(warehouses.get(random.nextInt(warehouseRepository.findAll().size())));
@@ -134,7 +138,7 @@ public class DataGenerator {
                 Stock s = new Stock();
                 Pickinglist pl=pickinglists.get(i);
                 s.setLocation(pl.getLocation());
-                s.setQuantity(2);
+                s.setQuantity(STOCK);
                 for (Product p : pl.getProduct()) {
                     s.setProductId(p.getproductId());
                     stocks.add(s);

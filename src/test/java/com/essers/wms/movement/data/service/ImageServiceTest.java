@@ -26,7 +26,7 @@ class ImageServiceTest {
     }
 
     @Test
-    void TestGenerateImage() {
+    void testGenerateImage() {
         ImageService imageService = mock(ImageService.class);
         imageService.generateImage(damagereport);
         verify(imageService).generateImage(damagereport);

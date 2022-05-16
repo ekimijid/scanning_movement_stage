@@ -43,7 +43,7 @@ public class PickinglistViewTest {
     }
 
     @Test
-    public void tsetRouteToMovementPageWhenPickingListSelected() {
+    public void testRouteToMovementPageWhenPickingListSelected() {
         PickinglistView view = mock(PickinglistView.class);
         view.grid = new Grid<>(Pickinglist.class);
         view.grid.setItems(testDataBuilder.getPickinglists());

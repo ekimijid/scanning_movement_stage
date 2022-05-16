@@ -52,7 +52,8 @@ public class MovementsView extends VerticalLayout implements BeforeEnterObserver
         try {
             UI.getCurrent().navigate("pickinglist/" + pickinglist.getCompany().getId());
 
-        } catch (Exception e) {
+        }  catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }
@@ -61,11 +62,11 @@ public class MovementsView extends VerticalLayout implements BeforeEnterObserver
         boolean isNotPicked = true;
         String username = "";
         movement.getInProgressUser();
-        if (movement.getState().equals(State.PICKED)) {
+        if (movement.getState()==(State.PICKED)) {
             username = movement.getHandledUser();
             isNotPicked = false;
         }
-        if (movement.getState().equals(State.IN_PROCESS)) {
+        if (movement.getState()==(State.IN_PROCESS)) {
             username = movement.getInProgressUser();
             isNotPicked = false;
         }

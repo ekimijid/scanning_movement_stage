@@ -132,12 +132,13 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
         imageContainer.add(image);
     }
 
-    public void routerLink(Movement movement) {
+    private static void routerLink(Movement movement) {
         try {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
         } catch (NotFoundException e) {
-            LOGGER.info(e.getMessage());
             urlErrorHandler();
+            LOGGER.info(e.getMessage());
+
         }
     }
 
@@ -150,8 +151,9 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
                 product = productServ.getByID(movement.getProductId());
             }
         } catch (NotFoundException e) {
-            LOGGER.info(e.getMessage());
             urlErrorHandler();
+            LOGGER.info(e.getMessage());
+
         }
     }
 }

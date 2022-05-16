@@ -24,6 +24,18 @@ public class Damagereport implements Serializable {
     @Column(name = "picByte", length = 1000)
     private byte[] image;
 
+    public Damagereport(Long id, String productName, String productID, String movementID, LocalDateTime timestamp) {
+        this.id = id;
+        this.productName = productName;
+        this.productID = productID;
+        this.movementID = movementID;
+        this.timestamp = timestamp;
+    }
+
+    public Damagereport() {
+
+    }
+
     public Long getId() {
         return id;
     }

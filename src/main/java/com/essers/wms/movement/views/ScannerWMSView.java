@@ -60,14 +60,15 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
                 details(movement, product);
             }
         } catch (NotFoundException e) {
-            LOGGER.info(e.getMessage());
             urlErrorHandler();
+            LOGGER.info(e.getMessage());
+
         }
     }
 
     public void details(Movement movement, Product product) {
 
-        if (movement.getState().equals(State.PICKED)) {
+        if (movement.getState()==(State.PICKED)) {
             message("Barcode has already been scanned!");
             Button button = new Button("Back to movements", buttonClickEvent -> routerLink(movement));
             add(button);
@@ -133,21 +134,23 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
         }
     }
 
-    public void routerLink(Movement movement) {
+    private static void routerLink(Movement movement) {
         try {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
         } catch (NotFoundException e) {
-            LOGGER.info(e.getMessage());
             urlErrorHandler();
+            LOGGER.info(e.getMessage());
+
         }
     }
 
-    public void imageSend(Movement movement) {
+    private static void imageSend(Movement movement) {
         try {
             UI.getCurrent().navigate("damage/" + movement.getMovementId());
         } catch (NotFoundException e) {
-            LOGGER.info(e.getMessage());
             urlErrorHandler();
+            LOGGER.info(e.getMessage());
+
         }
 
     }
