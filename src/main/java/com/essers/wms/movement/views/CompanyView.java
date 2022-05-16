@@ -24,7 +24,7 @@ public final class CompanyView extends VerticalLayout {
     private final transient PickingListService pickingListService;
 
     ComboBox<Company> companyComboBox;
-    Button button;
+    private Button button;
 
     public CompanyView(CompanyService companyService, PickingListService pickingListService) {
         this.pickingListService = pickingListService;

@@ -58,7 +58,7 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
         }
     }
 
-    private Component getContent(Movement movement) {
+    private static Component getContent(Movement movement) {
         boolean isNotPicked = true;
         String username = "";
         movement.getInProgressUser();
