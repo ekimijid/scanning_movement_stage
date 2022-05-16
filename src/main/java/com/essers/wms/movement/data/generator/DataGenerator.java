@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 @SpringComponent
 public class DataGenerator {
     private static final int NUMBER_OF_CYCLES = 40;
-    private static final  Logger logger = LoggerFactory.getLogger(DataGenerator.class);
+    private static final  Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
     private static final int SEED = 123;
     private static final int RANDOM_GETAL = 9;
     private static final int STOCK = 2;
@@ -83,7 +83,7 @@ public class DataGenerator {
         return args -> {
 
 
-            logger.info("Generating demo data");
+            LOGGER.info("Generating demo data");
 
             List<Role> roles = new ArrayList<>();
             Role role = new Role();

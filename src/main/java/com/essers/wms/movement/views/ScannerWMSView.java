@@ -23,7 +23,6 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
 import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import java.time.LocalDateTime;
@@ -61,7 +60,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             }
         } catch (NotFoundException e) {
             urlErrorHandler();
-            LOGGER.info(e.getMessage());
+            LOGGER.info("errors");
 
         }
     }
@@ -139,8 +138,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
         } catch (NotFoundException e) {
             urlErrorHandler();
-            LOGGER.info(e.getMessage());
-
+            LOGGER.info("error");
         }
     }
 
@@ -149,7 +147,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             UI.getCurrent().navigate("damage/" + movement.getMovementId());
         } catch (NotFoundException e) {
             urlErrorHandler();
-            LOGGER.info(e.getMessage());
+            LOGGER.info("error optreden");
 
         }
 
