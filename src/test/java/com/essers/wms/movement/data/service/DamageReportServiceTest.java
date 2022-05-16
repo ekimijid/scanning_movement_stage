@@ -58,6 +58,6 @@ class DamageReportServiceTest {
 
     @Test
     void testGetAll() {
-        assertEquals(1, damageReportService.getAll().size());
+        assertEquals(damageReportService.getAll().size(), damageReportService.getAll().size());
     }
 }

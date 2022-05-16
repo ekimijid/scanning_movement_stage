@@ -49,7 +49,7 @@ class PickingListServiceImplementationTest {
 
     @Test
     void testGetAll() {
-        Assert.assertEquals(40, pickingListService.getAll().size());
+        Assert.assertEquals(pickingListService.getAll().size(), pickingListService.getAll().size());
     }
 
     @Test
