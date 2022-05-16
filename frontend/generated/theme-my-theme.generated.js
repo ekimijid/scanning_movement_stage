@@ -6,10 +6,10 @@ const createLinkReferences = (css, target) => {
   // [1] matches the media query
   // [2] matches the url
   const importMatcher = /(?:@media\s(.+?))?(?:\s{)?\@import\surl\((.+?)\);(?:})?/g;
-
+  
   var match;
   var styleCss = css;
-
+  
   // For each external url import add a link reference
   while((match = importMatcher.exec(css)) !== null) {
     styleCss = styleCss.replace(match[0], "");
@@ -46,7 +46,7 @@ export const injectGlobalCss = (css, target, first) => {
     target.adoptedStyleSheets = [...target.adoptedStyleSheets, sheet];
   }
 };
-import stylesCss from 'themes/my-theme/portalpagestyles.css?inline';
+import stylesCss from 'themes/my-theme/styles.css?inline';
 import { color } from '@vaadin/vaadin-lumo-styles';
 import { typography } from '@vaadin/vaadin-lumo-styles';
 
@@ -84,15 +84,15 @@ function hashFnv32a(str) {
  */
 function getHash(input) {
   let h1 = hashFnv32a(input); // returns 32 bit (as 8 byte hex string)
-  return h1 + hashFnv32a(h1 + input);
+  return h1 + hashFnv32a(h1 + input); 
 }
 export const applyTheme = (target) => {
-
+  
   injectGlobalCss(stylesCss.toString(), target);
-
-
+    
+  
   if (!document['_vaadintheme_my-theme_componentCss']) {
-
+    
     document['_vaadintheme_my-theme_componentCss'] = true;
   }
   injectGlobalCss(color.cssText, target, true);

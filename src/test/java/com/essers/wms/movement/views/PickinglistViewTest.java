@@ -28,13 +28,13 @@ public class PickinglistViewTest {
     }
 
     @Test
-    public void gridPopulated() {
+    public void testGridPopulated() {
         Grid<Pickinglist> grid = pickinglistView.grid;
         Assert.assertEquals(Pickinglist.class, grid.getBeanType());
     }
 
     @Test
-    public void doNotRouteToMovementPage() {
+    public void testDoNotRouteToMovementPage() {
         PickinglistView view = mock(PickinglistView.class);
         view.grid = new Grid<>(Pickinglist.class);
         view.grid.setItems(testDataBuilder.getPickinglists());
@@ -43,7 +43,7 @@ public class PickinglistViewTest {
     }
 
     @Test
-    public void routeToMovementPageWhenPickingListSelected() {
+    public void tsetRouteToMovementPageWhenPickingListSelected() {
         PickinglistView view = mock(PickinglistView.class);
         view.grid = new Grid<>(Pickinglist.class);
         view.grid.setItems(testDataBuilder.getPickinglists());

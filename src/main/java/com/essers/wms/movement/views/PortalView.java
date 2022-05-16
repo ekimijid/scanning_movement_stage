@@ -32,15 +32,15 @@ public class PortalView extends VerticalLayout {
 
     }
 
-    private void interrack() {
+    public void interrack() {
         UI.getCurrent().navigate("company");
     }
 
-    private void partpallete() {
+    public void partpallete() {
         UI.getCurrent().navigate("");
     }
 
-    private void fullpallete() {
+    public void fullpallete() {
         UI.getCurrent().navigate("company");
     }
 

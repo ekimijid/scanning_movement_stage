@@ -5,10 +5,8 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 
-public class ErrorAlert {
-
+public final class ErrorAlert {
     private ErrorAlert() {
-
     }
 
     public static void message(String string) {

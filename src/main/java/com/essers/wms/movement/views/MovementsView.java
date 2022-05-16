@@ -2,6 +2,7 @@ package com.essers.wms.movement.views;
 
 import com.essers.wms.movement.data.entity.Movement;
 import com.essers.wms.movement.data.entity.Pickinglist;
+import com.essers.wms.movement.data.entity.State;
 import com.essers.wms.movement.data.service.MovementService;
 import com.essers.wms.movement.data.service.PickingListService;
 import com.vaadin.flow.component.Component;
@@ -16,13 +17,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-
 import javax.annotation.security.PermitAll;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.logging.Logger;
 import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
 
 
@@ -30,9 +31,9 @@ import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
 @Route(value = "movements/:pickinglistID", layout = MainView.class)
 @PageTitle("Movements")
 public class MovementsView extends VerticalLayout implements BeforeEnterObserver {
+    private static final Logger LOGGER=Logger.getLogger("InfoLogging");
     private final transient PickingListService pickingListService;
     private final transient MovementService movementService;
-
 
     private Pickinglist pickinglist;
 
@@ -47,25 +48,24 @@ public class MovementsView extends VerticalLayout implements BeforeEnterObserver
     }
 
 
-    private void routerLinkBack(Pickinglist pickinglist) {
+    public void routerLinkBack(Pickinglist pickinglist) {
         try {
             UI.getCurrent().navigate("pickinglist/" + pickinglist.getCompany().getId());
 
         } catch (Exception e) {
             urlErrorHandler();
         }
-
     }
 
     private Component getContent(Movement movement) {
         boolean isNotPicked = true;
         String username = "";
         movement.getInProgressUser();
-        if (movement.getState().equals("picked")) {
+        if (movement.getState().equals(State.PICKED)) {
             username = movement.getHandledUser();
             isNotPicked = false;
         }
-        if (movement.getState().equals("in_process")) {
+        if (movement.getState().equals(State.IN_PROCESS)) {
             username = movement.getInProgressUser();
             isNotPicked = false;
         }
@@ -107,15 +107,17 @@ public class MovementsView extends VerticalLayout implements BeforeEnterObserver
                     add(getContent(m));
                 }
             }
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }
 
-    private void routerLink(Movement value) {
+    public void routerLink(Movement value) {
         try {
             UI.getCurrent().navigate("scanner/" + value.getMovementId());
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
 

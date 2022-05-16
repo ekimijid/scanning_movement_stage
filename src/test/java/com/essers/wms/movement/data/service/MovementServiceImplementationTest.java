@@ -50,20 +50,20 @@ class MovementServiceImplementationTest {
     
 
     @Test
-    void getById() {
+    void testGetById() {
         Assert.assertEquals(testDataBuilder.getMovement().getMovementId(), movementService.getById(testDataBuilder.getMovement().getMovementId()).getMovementId());
     }
 
 
     @Test
-    void remove() {
+    void testRemove() {
         MovementService movementService = mock(MovementService.class);
         movementService.remove(testDataBuilder.getMovement());
         verify(movementService, times(1)).remove(testDataBuilder.getMovement());
     }
 
     @Test
-    void save() {
+    void testSave() {
         Movement movement = new Movement();
         movement.setPalleteNummer("111111");
         movementService.save(movement);

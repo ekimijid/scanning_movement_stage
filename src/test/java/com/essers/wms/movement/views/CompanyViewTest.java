@@ -31,7 +31,7 @@ class CompanyViewTest {
     }
 
     @Test
-    void selectCompany() {
+    void testSelectCompany() {
         ComboBox<Company> comboBox = companyView.companyComboBox;
         comboBox.setItems(testDataBuilder.getCompanies());
         comboBox.setValue(testDataBuilder.getCompany());

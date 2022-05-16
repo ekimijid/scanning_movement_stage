@@ -35,32 +35,6 @@ public class Movement implements Serializable {
     private String handledUser;
     private String palleteNummer;
 
-    public Movement(Long movementId, String wmsCompany, String wmsSite, String wmsWarehouse, Movementtype movementType, String priority, String productId, String supplierId, Integer quantity, String uom, String locationFrom, String locationTo, LocalDateTime inProgressTimestamp, String inProgressUser, String location, String state, String handledUser, String palleteNummer, Pickinglist pickinglist, List<Stock> stock) {
-        this.movementId = movementId;
-        this.wmsCompany = wmsCompany;
-        this.wmsSite = wmsSite;
-        this.wmsWarehouse = wmsWarehouse;
-        this.movementType = movementType;
-        this.priority = priority;
-        this.productId = productId;
-        this.supplierId = supplierId;
-        this.quantity = quantity;
-        this.uom = uom;
-        this.locationFrom = locationFrom;
-        this.locationTo = locationTo;
-        this.inProgressTimestamp = inProgressTimestamp;
-        this.inProgressUser = inProgressUser;
-        this.location = location;
-        this.state = state;
-        this.handledUser = handledUser;
-        this.palleteNummer = palleteNummer;
-        this.pickinglist = pickinglist;
-        this.stock = stock;
-    }
-
-    public Movement() {
-    }
-
     @Valid
     @ManyToOne
     private Pickinglist pickinglist;

@@ -7,6 +7,7 @@ import com.essers.wms.movement.data.entity.Pickinglist;
 import com.essers.wms.movement.data.entity.Product;
 import com.essers.wms.movement.data.entity.Role;
 import com.essers.wms.movement.data.entity.Site;
+import com.essers.wms.movement.data.entity.State;
 import com.essers.wms.movement.data.entity.Stock;
 import com.essers.wms.movement.data.entity.Supplier;
 import com.essers.wms.movement.data.entity.User;
@@ -20,6 +21,7 @@ import com.essers.wms.movement.data.repository.SiteRepository;
 import com.essers.wms.movement.data.repository.StockRepository;
 import com.essers.wms.movement.data.repository.UserRepository;
 import com.essers.wms.movement.data.repository.WarehouseRepository;
+import com.helger.commons.annotation.VisibleForTesting;
 import com.vaadin.exampledata.DataType;
 import com.vaadin.exampledata.ExampleDataGenerator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -38,26 +40,38 @@ import java.util.stream.Stream;
 
 @SpringComponent
 public class DataGenerator {
+    public static final int NUMBER_OF_CYCLES = 40;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
-    MovementRepository movementRepository;
+    private MovementRepository movementRepository;
+
     @Autowired
-    PickinglistRepository pickinglistRepository;
+    private PickinglistRepository pickinglistRepository;
+
     @Autowired
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
+
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
+
     @Autowired
-    CompanyRepository companyRepository;
+    private CompanyRepository companyRepository;
+
     @Autowired
-    WarehouseRepository warehouseRepository;
+    private WarehouseRepository warehouseRepository;
+
     @Autowired
-    SiteRepository siteRepository;
+    private SiteRepository siteRepository;
+
     private final Random random = new Random();
 
 
@@ -91,11 +105,11 @@ public class DataGenerator {
             productExampleDataGenerator.setData(Product::setName, DataType.WORD);
             productExampleDataGenerator.setData(Product::setLocation, DataType.WORD);
             productExampleDataGenerator.setData(Product::setDescription, DataType.SENTENCE);
-            List<Product> products = productRepository.saveAll(productExampleDataGenerator.create(100, seed));
+            List<Product> products = productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES, seed));
 
             ExampleDataGenerator<Company> companyExampleDataGenerator = new ExampleDataGenerator<>(Company.class, LocalDateTime.now());
             companyExampleDataGenerator.setData(Company::setName, DataType.COMPANY_NAME);
-            List<Company> companies = companyRepository.saveAll(companyExampleDataGenerator.create(50, seed));
+            List<Company> companies = companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES, seed));
 
             List<Warehouse> warehouses = warehouseRepository.saveAll(Stream.of("WH10", "WH11", "WH12").map(Warehouse::new).toList());
 
@@ -106,7 +120,7 @@ public class DataGenerator {
             ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class, LocalDateTime.now());
             pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_10);
             pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD);
-            List<Pickinglist> pickinglists = pickinglistGenerator.create(40, seed).stream().map(plist -> {
+            List<Pickinglist> pickinglists = pickinglistGenerator.create(NUMBER_OF_CYCLES, seed).stream().map(plist -> {
                 plist.setProduct(random.ints(9, 0, products.size()).mapToObj(products::get).toList());
                 plist.setCompany(companies.get(random.nextInt(companyRepository.findAll().size())));
                 plist.setWmsSite(sites.get(random.nextInt(siteRepository.findAll().size())));
@@ -139,7 +153,7 @@ public class DataGenerator {
                     movement.setUom(pl.getUom());
                     movement.setWmsCompany(pl.getCompany().getName());
                     movement.setProductId(p.getproductId());
-                    movement.setState("pick");
+                    movement.setState(State.PICK.name());
                     movement.setPalleteNummer("03600029145");
                     movements.add(movement);
                 }

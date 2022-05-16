@@ -12,8 +12,12 @@ import java.io.ByteArrayInputStream;
 @Service
 public class ImageService {
 
-    @Autowired
     private DamagereportRepository damagereportRepository;
+
+    @Autowired
+    public ImageService(DamagereportRepository damagereportRepository) {
+        this.damagereportRepository = damagereportRepository;
+    }
 
     public Image generateImage(Damagereport damagereport) {
         Long id = damagereport.getId();

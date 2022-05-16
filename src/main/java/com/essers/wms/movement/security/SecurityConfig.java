@@ -33,10 +33,10 @@ public class SecurityConfig extends VaadinWebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/images/**");
         super.configure(web);
     }
+
    @Bean
     public DaoAuthenticationProvider createDaoAuthenticationProvider(BCryptPasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;

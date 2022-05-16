@@ -19,9 +19,11 @@ import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -38,7 +40,7 @@ import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
 @PageTitle("WMS Scanner")
 public final class PhotoView extends VerticalLayout implements BeforeEnterObserver {
     private static final String PIXEL = "200px";
-
+    private static final Logger LOGGER=Logger.getLogger("InfoLogging");
     private Damagereport damagereport;
     private Product product;
     private final transient MovementService movementService;
@@ -106,7 +108,7 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
                 showImage();
 
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.info(e.getMessage());
             }
 
         });
@@ -123,17 +125,18 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
         damageReportService.saveReport(damagereport);
     }
 
-    private void showImage() {
+    public void showImage() {
         Image image = imageService.generateImage(damagereport);
         image.setHeight("100%");
         imageContainer.removeAll();
         imageContainer.add(image);
     }
 
-    private void routerLink(Movement movement) {
+    public void routerLink(Movement movement) {
         try {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }
@@ -146,7 +149,8 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
                 movement = movementService.getById(Long.valueOf(id.get()));
                 product = productServ.getByID(movement.getProductId());
             }
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }

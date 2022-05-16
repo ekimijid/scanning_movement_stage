@@ -2,6 +2,7 @@ package com.essers.wms.movement.views;
 
 import com.essers.wms.movement.data.entity.Movement;
 import com.essers.wms.movement.data.entity.Product;
+import com.essers.wms.movement.data.entity.State;
 import com.essers.wms.movement.data.service.MovementService;
 import com.essers.wms.movement.data.service.ProductService;
 import com.essers.wms.movement.security.SecurityService;
@@ -19,9 +20,11 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -33,7 +36,7 @@ import static com.essers.wms.movement.util.ErrorAlert.message;
 @Route(value = "scanner/:movementID", layout = MainView.class)
 @PageTitle("WMS Scanner")
 public final class ScannerWMSView extends Div implements BeforeEnterObserver {
-
+    private static final Logger LOGGER=Logger.getLogger("InfoLogging");
     private final transient MovementService movementService;
     private final transient SecurityService securityService;
     private final transient ProductService productService;
@@ -56,14 +59,15 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
                 Product product = productService.getByID(movement.getProductId());
                 details(movement, product);
             }
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }
 
-    private void details(Movement movement, Product product) {
+    public void details(Movement movement, Product product) {
 
-        if (movement.getState().equals("picked")) {
+        if (movement.getState().equals(State.PICKED)) {
             message("Barcode has already been scanned!");
             Button button = new Button("Back to movements", buttonClickEvent -> routerLink(movement));
             add(button);
@@ -73,7 +77,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             alertbutton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR);
 
             movement.setInProgressUser(securityService.getAuthenticatedUser().getUsername());
-            movement.setState("in_process");
+            movement.setState(State.IN_PROCESS.name());
             movementService.save(movement);
 
             TextArea info = new TextArea(null, product.getName().toUpperCase() + "\n" + product.getDescription(), (String) null);
@@ -99,7 +103,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
 
     }
 
-    private void scanLocation(Movement movement, String barcode) {
+    public void scanLocation(Movement movement, String barcode) {
         if (movement.getPalleteNummer().equals(barcode)) {
             textFieldScanner = new TextField();
             textFieldScanner.setLabel("Location ");
@@ -116,9 +120,9 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
 
     }
 
-    private void updatePickinglist(Movement movement, String string) {
+    public void updatePickinglist(Movement movement, String string) {
         if (movement.getLocation().equals(string)) {
-            movement.setState("picked");
+            movement.setState(State.PICKED.name());
             movement.setInProgressUser("");
             movement.setHandledUser(securityService.getAuthenticatedUser().getUsername());
             movement.setInProgressTimestamp(LocalDateTime.now());
@@ -129,18 +133,20 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
         }
     }
 
-    private void routerLink(Movement movement) {
+    public void routerLink(Movement movement) {
         try {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }
 
-    private void imageSend(Movement movement) {
+    public void imageSend(Movement movement) {
         try {
             UI.getCurrent().navigate("damage/" + movement.getMovementId());
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
 

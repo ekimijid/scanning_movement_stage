@@ -48,22 +48,22 @@ class PickingListServiceImplementationTest {
     }
 
     @Test
-    void getAll() {
+    void testGetAll() {
         Assert.assertEquals(40, pickingListService.getAll().size());
     }
 
     @Test
-    void getById() {
+    void TestGetById() {
         Assert.assertEquals(testDataBuilder.getPickinglist().getPickingListId(), pickingListService.getById(testDataBuilder.getPickinglist().getPickingListId()).getPickingListId());
     }
 
     @Test
-    void getByCompany() {
+    void TestGetByCompany() {
         Assert.assertEquals(testDataBuilder.getPickinglists().size(), pickingListService.getByCompany(testDataBuilder.getCompany()).size());
     }
 
     @Test
-    void save() {
+    void TestSave() {
         Pickinglist pl = new Pickinglist();
         pl.setLocation("test location");
         pickingListService.save(pl);

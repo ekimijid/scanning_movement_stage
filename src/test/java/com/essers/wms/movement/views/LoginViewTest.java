@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class LoginViewTest {
 
    @Test
-    void loginFormErrorTest() {
+    void testLoginFormErrorTest() {
         LoginForm loginForm = new LoginForm();
         loginForm.setError(true);
         assertTrue(loginForm.isError());

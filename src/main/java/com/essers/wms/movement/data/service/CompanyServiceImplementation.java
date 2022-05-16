@@ -10,8 +10,13 @@ import java.util.List;
 @Service
 public class CompanyServiceImplementation implements CompanyService {
 
+
+    private CompanyRepository companyRepository;
+
     @Autowired
-    CompanyRepository companyRepository;
+    public CompanyServiceImplementation(CompanyRepository companyRepository) {
+        this.companyRepository = companyRepository;
+    }
 
     @Override
     public List<Company> getAll() {

@@ -28,12 +28,12 @@ class StockServiceImplementationTest {
     }
 
     @Test
-    void getAll() {
+    void testGetAll() {
         assertEquals(41, testDataBuilder.getStocks().size(), stockservice.getAll().size());
     }
 
     @Test
-    void getById() {
+    void testGetById() {
         assertEquals(testDataBuilder.getStock().getId(), stockservice.getById(testDataBuilder.getStock().getId()).getId());
     }
 }

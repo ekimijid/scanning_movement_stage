@@ -9,8 +9,13 @@ import java.util.List;
 
 @Service
 public class DamageReportService {
-    @Autowired
+
     private DamagereportRepository damagereportRepository;
+
+    @Autowired
+    public DamageReportService(DamagereportRepository damagereportRepository) {
+        this.damagereportRepository = damagereportRepository;
+    }
 
     public void saveReport(Damagereport damagereport) {
         damagereportRepository.save(damagereport);

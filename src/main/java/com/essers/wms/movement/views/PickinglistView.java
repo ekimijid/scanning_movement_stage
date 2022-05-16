@@ -11,9 +11,11 @@ import com.vaadin.flow.component.html.H5;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.NotFoundException;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Component;
 @Route(value = "pickinglist/:companyID", layout = MainView.class)
 @PageTitle("PickingList")
 public class PickinglistView extends VerticalLayout implements BeforeEnterObserver {
+    private static final Logger LOGGER=Logger.getLogger("InfoLogging");
     protected Grid<Pickinglist> grid = new Grid<>(Pickinglist.class);
     private final transient PickingListService pickingListService;
     private final transient CompanyService companyService;
@@ -32,10 +35,10 @@ public class PickinglistView extends VerticalLayout implements BeforeEnterObserv
     public PickinglistView(PickingListService pickingListService, CompanyService companyService) {
         this.pickingListService = pickingListService;
         this.companyService = companyService;
-        setSizeFull();
-        configureGrid();
-        updateList();
-        add(getContent());
+        super.setSizeFull();
+        this.configureGrid();
+        this.updateList();
+        super.add(getContent());
     }
 
     private void configureGrid() {
@@ -61,7 +64,8 @@ public class PickinglistView extends VerticalLayout implements BeforeEnterObserv
     protected void routerLink(Pickinglist value) {
         try {
             UI.getCurrent().navigate("movements/" + value.getPickingListId());
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }
@@ -74,7 +78,8 @@ public class PickinglistView extends VerticalLayout implements BeforeEnterObserv
                 company = companyService.getById(Long.valueOf(id.get()));
                 updateList();
             }
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
+            LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
     }

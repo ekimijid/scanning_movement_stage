@@ -9,19 +9,19 @@ class MainViewTest {
     private MainView mainView = mock(MainView.class);
 
     @Test
-    void createHeader() {
+    void testCreateHeader() {
         mainView.createHeader();
         verify(mainView, times(1)).createHeader();
     }
 
     @Test
-    void createDrawer() {
+    void testGreateDrawer() {
         mainView.createDrawer();
         verify(mainView, times(1)).createDrawer();
     }
 
     @Test
-    void movementsStatusChange() {
+    void testMovementsStatusChange() {
         mainView.movementsStatusChange();
         verify(mainView, times(1)).movementsStatusChange();
     }

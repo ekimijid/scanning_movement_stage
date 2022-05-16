@@ -12,8 +12,13 @@ import java.util.List;
 @Service
 public class PickingListServiceImplementation implements PickingListService, Serializable {
 
-    @Autowired
+
     private transient PickinglistRepository pickinglistRepository;
+
+    @Autowired
+    public PickingListServiceImplementation(PickinglistRepository pickinglistRepository) {
+        this.pickinglistRepository = pickinglistRepository;
+    }
 
     @Override
     public List<Pickinglist> getAll() {

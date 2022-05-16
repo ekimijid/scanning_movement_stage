@@ -7,8 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductServiceImplementation implements ProductService {
+
+    private ProductRepository productRepository;
+
     @Autowired
-    ProductRepository productRepository;
+    public ProductServiceImplementation(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Product getByID(String id) {

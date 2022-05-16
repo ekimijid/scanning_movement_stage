@@ -24,8 +24,8 @@ public class MainView extends AppLayout {
     public MainView(SecurityService securityService, MovementService movementService) {
         this.securityService = securityService;
         this.movementService = movementService;
-        createHeader();
-        createDrawer();
+        this.createHeader();
+        this.createDrawer();
     }
 
     protected void createHeader() {

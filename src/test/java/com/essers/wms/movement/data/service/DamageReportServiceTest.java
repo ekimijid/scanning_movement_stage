@@ -51,13 +51,13 @@ class DamageReportServiceTest {
     }
 
     @Test
-    void saveReport() {
+    void testSaveReport() {
         damageReportService.saveReport(damagereport);
         assertEquals(damagereport.getId(), damagereportRepository.findDamagereportById(damagereport.getId()).getId());
     }
 
     @Test
-    void getAll() {
+    void testGetAll() {
         assertEquals(1, damageReportService.getAll().size());
     }
 }

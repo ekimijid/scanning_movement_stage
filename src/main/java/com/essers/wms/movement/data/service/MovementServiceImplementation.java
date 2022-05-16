@@ -11,8 +11,13 @@ import java.util.List;
 @Service
 public class MovementServiceImplementation implements MovementService {
 
-    @Autowired
+
     private MovementRepository movementRepository;
+
+    @Autowired
+    public MovementServiceImplementation(MovementRepository movementRepository) {
+        this.movementRepository = movementRepository;
+    }
 
     @Override
     public List<Movement> getAll() {

@@ -27,7 +27,7 @@ class ProductServiceImplementationTest {
     }
 
     @Test
-    void getByID() {
+    void testGetByID() {
         assertEquals(testDataBuilder.getProduct().getproductId(), productService.getByID(testDataBuilder.getProduct().getproductId()).getproductId());
     }
 }

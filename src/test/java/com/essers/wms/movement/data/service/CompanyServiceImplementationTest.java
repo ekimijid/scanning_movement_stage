@@ -28,7 +28,7 @@ class CompanyServiceImplementationTest {
     }
 
     @Test
-    void getById() {
+    void testGetById() {
 
         Assert.assertEquals(testDataBuilder.getCompany().getName(), companyService.getById(testDataBuilder.getCompany().getId()).getName());
     }

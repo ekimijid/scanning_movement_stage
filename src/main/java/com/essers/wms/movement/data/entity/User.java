@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static javax.persistence.FetchType.EAGER;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Entity
 public class User implements Serializable {
@@ -20,11 +21,7 @@ public class User implements Serializable {
     private String password;
     private String userName;
 
-    public User(Long id, String password, String userName, Collection<Role> roles) {
-        this.id = id;
-        this.password = password;
-        this.userName = userName;
-        this.roles = roles;
+    public User(String userName, String password, Collection<SimpleGrantedAuthority> authorities) {
     }
 
     public User() {
@@ -32,6 +29,8 @@ public class User implements Serializable {
 
     @OneToMany(fetch = EAGER, mappedBy = "user")
     private Collection<Role> roles = new ArrayList<>();
+
+
 
     public Long getId() {
         return id;
