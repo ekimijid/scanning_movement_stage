@@ -23,15 +23,12 @@ public final class CompanyView extends VerticalLayout {
 
     private final transient PickingListService pickingListService;
 
-    ComboBox<Company> companyComboBox;
-    private Button button;
-
     public CompanyView(CompanyService companyService, PickingListService pickingListService) {
         this.pickingListService = pickingListService;
-        companyComboBox = new ComboBox<>("Company");
+        ComboBox<Company> companyComboBox = new ComboBox<>("Company");
         companyComboBox.setItems(companyService.getAll());
         companyComboBox.setItemLabelGenerator(Company::getName);
-        button = new Button("Select", buttonClickEvent -> selectCompany(companyComboBox.getValue()));
+        Button button = new Button("Select", buttonClickEvent -> selectCompany(companyComboBox.getValue()));
         add(companyComboBox, button);
     }
 

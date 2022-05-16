@@ -18,35 +18,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PickinglistViewTest {
-    private TestDataBuilder testDataBuilder;
-    @Autowired
-    PickinglistView view;
-
-    @Before
-    public void setupData() {
-        testDataBuilder = new TestDataBuilder();
-    }
 
     @Test
     public void testGridPopulated() {
-        Grid<Pickinglist> grid = view.grid;
+        Grid grid=new Grid(Pickinglist.class);
         Assert.assertEquals(Pickinglist.class, grid.getBeanType());
     }
 
-  /*  @Test
-    public void testDoNotRouteToMovementPage() {
-        view.grid = new Grid<>(Pickinglist.class);
-        view.grid.setItems(testDataBuilder.getPickinglists());
-
-        verify(view, never()).routerLink(testDataBuilder.getPickinglist());
-    }
-
-    @Test
-    public void testRouteToMovementPageWhenPickingListSelected() {
-        view.grid = new Grid<>(Pickinglist.class);
-        view.grid.setItems(testDataBuilder.getPickinglists());
-        view.grid.asSingleSelect().setValue(testDataBuilder.getPickinglist());
-        view.routerLink(testDataBuilder.getPickinglist());
-        verify(view, times(1)).routerLink(testDataBuilder.getPickinglist());
-    }*/
 }

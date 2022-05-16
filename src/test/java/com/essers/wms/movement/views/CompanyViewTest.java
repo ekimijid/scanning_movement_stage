@@ -17,8 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 class CompanyViewTest {
 
     @Autowired
-    private CompanyView companyView;
-    @Autowired
     private CompanyRepository companyRepository;
 
     private TestDataBuilder testDataBuilder;
@@ -32,7 +30,7 @@ class CompanyViewTest {
 
     @Test
     void testSelectCompany() {
-        ComboBox<Company> comboBox = companyView.companyComboBox;
+        ComboBox<Company> comboBox = new ComboBox<>();
         comboBox.setItems(testDataBuilder.getCompanies());
         comboBox.setValue(testDataBuilder.getCompany());
         Assert.assertEquals(comboBox.getValue(), testDataBuilder.getCompany());
