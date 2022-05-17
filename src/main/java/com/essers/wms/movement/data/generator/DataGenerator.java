@@ -82,7 +82,6 @@ public class DataGenerator {
     public CommandLineRunner loadData() {
         return args -> {
 
-
             LOGGER.info("Generating demo data");
 
             List<Role> roles = new ArrayList<>();
@@ -169,7 +168,6 @@ public class DataGenerator {
                 }
                 pl.setMovements(movements);
             }
-
 
             for (Movement m : movements) {
                 for (Stock s : stockRepository.findAll()) {

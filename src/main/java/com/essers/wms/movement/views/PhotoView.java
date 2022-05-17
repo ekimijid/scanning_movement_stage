@@ -31,13 +31,16 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.imageio.ImageIO;
+import org.springframework.context.annotation.Scope;
 
+@org.springframework.stereotype.Component
+@Scope("prototype")
 @PermitAll
 @Route(value = "damage/:movementID", layout = MainView.class)
 @PageTitle("WMS Scanner")
 public final class PhotoView extends VerticalLayout implements BeforeEnterObserver {
     private static final String PIXEL = "200px";
-    private static final Logger LOGGER = Logger.getLogger("InfoLogging");
+    private static final Logger LOGGER = Logger.getLogger(PhotoView.class.getName());
     private final Damagereport damagereport;
     private Product product;
     private final transient MovementService movementService;

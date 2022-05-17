@@ -25,13 +25,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
+import org.springframework.context.annotation.Scope;
 
-
+@org.springframework.stereotype.Component
+@Scope("prototype")
 @PermitAll
 @Route(value = "movements/:pickinglistID", layout = MainView.class)
 @PageTitle("Movements")
 public final class MovementsView extends VerticalLayout implements BeforeEnterObserver {
-    private static final Logger LOGGER = Logger.getLogger("InfoLogging");
+    private static final Logger LOGGER = Logger.getLogger(MovementsView.class.getName());
     private final transient PickingListService pickingListService;
     private final transient MovementService movementService;
 
@@ -72,9 +74,10 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
         }
 
         TextArea info = new TextArea(null,
-                "Movement" + movement.getMovementId() + "                  "
-                        + movement.getState() + "\n" + movement.getMovementType() + "                                       "
-                        + username + "\n" + movement.getWmsCompany() + "\n" + movement.getWmsSite() + " - "
+                "Movement" + movement.getMovementId()
+                        + "                  " + movement.getState() + "\n" + movement.getMovementType()
+                        + "                                       " + username + "\n"
+                        + movement.getWmsCompany() + "\n" + movement.getWmsSite() + " - "
                         + movement.getWmsWarehouse(), (String) null);
         info.setWidth("300px");
         info.setReadOnly(true);

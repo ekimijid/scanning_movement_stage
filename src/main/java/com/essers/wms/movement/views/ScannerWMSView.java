@@ -30,12 +30,16 @@ import java.util.Optional;
 
 import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
 import static com.essers.wms.movement.util.ErrorAlert.message;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 @PermitAll
 @Route(value = "scanner/:movementID", layout = MainView.class)
 @PageTitle("WMS Scanner")
 public final class ScannerWMSView extends Div implements BeforeEnterObserver {
-    private static final Logger LOGGER = Logger.getLogger("InfoLogging");
+    private static final Logger LOGGER = Logger.getLogger(ScannerWMSView.class.getName());
     private final transient MovementService movementService;
     private final transient SecurityService securityService;
     private final transient ProductService productService;

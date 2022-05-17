@@ -16,7 +16,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import java.util.List;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public final class MainView extends AppLayout {
 
     private final transient SecurityService securityService;
@@ -59,7 +63,7 @@ public final class MainView extends AppLayout {
         addToDrawer(layout);
     }
 
-    private void movementsStatusChange() {
+    public boolean movementsStatusChange() {
         List<Movement> movements = movementService.getAll();
         String username = securityService.getAuthenticatedUser().getUsername();
         for (Movement mov : movements) {
@@ -69,5 +73,6 @@ public final class MainView extends AppLayout {
                 movementService.save(mov);
             }
         }
+        return true;
     }
 }

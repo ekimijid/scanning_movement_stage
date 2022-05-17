@@ -9,8 +9,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
-
+@Component
+@Scope("prototype")
 @PermitAll
 @Route(value = "", layout = MainView.class)
 @PageTitle("WMS Scanner")

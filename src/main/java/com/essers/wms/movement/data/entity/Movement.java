@@ -34,22 +34,11 @@ public class Movement implements Serializable {
     private State state;
     private String handledUser;
     private String palleteNummer;
-
-    public void setSupplierId(String supplierId) {
-        this.supplierId = supplierId;
-    }
-
     @Valid
     @ManyToOne
     private Pickinglist pickinglist;
-
     @ManyToMany
     private List<Stock> stock = new ArrayList<>();
-
-    public String getSupplierId() {
-        return supplierId;
-    }
-
     public Movement(Long movementId, String wmsCompany, String wmsSite, String wmsWarehouse,
                     Movementtype movementType, String supplierId) {
         this.movementId = movementId;
@@ -62,6 +51,12 @@ public class Movement implements Serializable {
 
     public Movement() {
 
+    }
+    public String getSupplierId() {
+        return supplierId;
+    }
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
     }
 
     public Long getMovementId() {
