@@ -55,8 +55,9 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
             UI.getCurrent().navigate("pickinglist/" + pickinglist.getCompany().getId());
 
         } catch (NotFoundException e) {
-            LOGGER.info(e.getMessage());
-            urlErrorHandler();
+            String error=urlErrorHandler()+e.getMessage();
+            LOGGER.warning(error);
+
         }
     }
 
@@ -117,8 +118,8 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
                 }
             }
         } catch (Exception e) {
-            urlErrorHandler();
-            LOGGER.warning(e.getMessage());
+            String error=urlErrorHandler()+e.getMessage();
+            LOGGER.warning(error);
 
         }
     }
@@ -127,8 +128,8 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
         try {
             UI.getCurrent().navigate("scanner/" + value.getMovementId());
         } catch (NotFoundException e) {
-            urlErrorHandler();
-            LOGGER.warning(e.getMessage());
+            String error=urlErrorHandler()+e.getMessage();
+            LOGGER.warning(error);
 
         }
 
