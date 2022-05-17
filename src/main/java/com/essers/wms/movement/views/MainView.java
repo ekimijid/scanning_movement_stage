@@ -61,9 +61,9 @@ public final class MainView extends AppLayout {
 
     private void movementsStatusChange() {
         List<Movement> movements = movementService.getAll();
-        String username=securityService.getAuthenticatedUser().getUsername();
+        String username = securityService.getAuthenticatedUser().getUsername();
         for (Movement mov : movements) {
-            if (mov.getState()==State.IN_PROCESS && (mov.getInProgressUser().equals(username))) {
+            if (mov.getState() == State.IN_PROCESS && (mov.getInProgressUser().equals(username))) {
                 mov.setState(State.PICK);
                 mov.setInProgressUser(null);
                 movementService.save(mov);

@@ -15,8 +15,9 @@ public final class ErrorAlert {
         notification.setPosition(Notification.Position.MIDDLE);
     }
 
-    public static void urlErrorHandler() {
+    public static String urlErrorHandler() {
         message("An error has occurred! ");
         UI.getCurrent().navigate(PortalView.class);
+        return "An error has occurred! ";
     }
 }

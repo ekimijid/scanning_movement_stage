@@ -103,24 +103,31 @@ public class DataGenerator {
             user.setPassword(passwordEncoder.encode("user"));
             user.setRoles(roles);
             userRepository.save(user2);
-            ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class, LocalDateTime.now());
+            ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
+                    LocalDateTime.now());
             productExampleDataGenerator.setData(Product::setProductId, DataType.EAN13);
             productExampleDataGenerator.setData(Product::setName, DataType.WORD);
             productExampleDataGenerator.setData(Product::setLocation, DataType.WORD);
             productExampleDataGenerator.setData(Product::setDescription, DataType.SENTENCE);
-            List<Product> products = productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
+            List<Product> products = productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES,
+                    SEED));
 
-            ExampleDataGenerator<Company> companyExampleDataGenerator = new ExampleDataGenerator<>(Company.class, LocalDateTime.now());
+            ExampleDataGenerator<Company> companyExampleDataGenerator = new ExampleDataGenerator<>(Company.class,
+                    LocalDateTime.now());
             companyExampleDataGenerator.setData(Company::setName, DataType.COMPANY_NAME);
-            List<Company> companies = companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
+            List<Company> companies = companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES,
+                    SEED));
 
-            List<Warehouse> warehouses = warehouseRepository.saveAll(Stream.of("WH10", "WH11", "WH12").map(Warehouse::new).toList());
+            List<Warehouse> warehouses =
+                    warehouseRepository.saveAll(Stream.of("WH10", "WH11", "WH12").map(Warehouse::new).toList());
 
             List<Site> sites = siteRepository.saveAll(Stream.of("Winterslag", "Genk").map(Site::new).toList());
 
-            ExampleDataGenerator<Supplier> supplierExampleDataGenerator = new ExampleDataGenerator<>(Supplier.class, LocalDateTime.now());
+            ExampleDataGenerator<Supplier> supplierExampleDataGenerator = new ExampleDataGenerator<>(Supplier.class,
+                    LocalDateTime.now());
             supplierExampleDataGenerator.setData(Supplier::setName, DataType.WORD);
-            ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class, LocalDateTime.now());
+            ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class,
+                    LocalDateTime.now());
             pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_10);
             pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD);
             List<Pickinglist> pickinglists = pickinglistGenerator.create(NUMBER_OF_CYCLES, SEED).stream().map(plist -> {

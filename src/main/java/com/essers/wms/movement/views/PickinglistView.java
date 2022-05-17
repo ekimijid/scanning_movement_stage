@@ -65,8 +65,7 @@ public final class PickinglistView extends VerticalLayout implements BeforeEnter
         try {
             UI.getCurrent().navigate("movements/" + value.getPickingListId());
         } catch (NotFoundException e) {
-            urlErrorHandler();
-            LOGGER.info(e.getMessage());
+            LOGGER.warning(e.getMessage());
 
         }
     }
@@ -81,7 +80,7 @@ public final class PickinglistView extends VerticalLayout implements BeforeEnter
             }
         } catch (NotFoundException e) {
             urlErrorHandler();
-            LOGGER.info(e.getMessage());
+            LOGGER.warning(e.getMessage());
         }
     }
 }

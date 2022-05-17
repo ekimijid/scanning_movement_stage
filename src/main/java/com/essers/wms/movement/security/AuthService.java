@@ -14,8 +14,13 @@ import org.springframework.stereotype.Service;
 @Service("authService")
 public class AuthService implements UserDetailsService {
 
+
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
@@ -23,7 +28,8 @@ public class AuthService implements UserDetailsService {
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
 
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),
+                authorities);
     }
 
 }

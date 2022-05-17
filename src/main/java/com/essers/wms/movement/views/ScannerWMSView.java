@@ -35,13 +35,14 @@ import static com.essers.wms.movement.util.ErrorAlert.message;
 @Route(value = "scanner/:movementID", layout = MainView.class)
 @PageTitle("WMS Scanner")
 public final class ScannerWMSView extends Div implements BeforeEnterObserver {
-    private static final Logger LOGGER=Logger.getLogger("InfoLogging");
+    private static final Logger LOGGER = Logger.getLogger("InfoLogging");
     private final transient MovementService movementService;
     private final transient SecurityService securityService;
     private final transient ProductService productService;
     private TextField textFieldScanner;
 
-    public ScannerWMSView(MovementService movementService, SecurityService securityService, ProductService productService) {
+    public ScannerWMSView(MovementService movementService, SecurityService securityService,
+                          ProductService productService) {
         this.movementService = movementService;
         this.securityService = securityService;
         this.productService = productService;
@@ -67,7 +68,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
 
     public void details(Movement movement, Product product) {
 
-        if (movement.getState()==(State.PICKED)) {
+        if (movement.getState() == (State.PICKED)) {
             message("Barcode has already been scanned!");
             Button button = new Button("Back to movements", buttonClickEvent -> routerLink(movement));
             add(button);
@@ -80,7 +81,8 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             movement.setState(State.IN_PROCESS);
             movementService.save(movement);
 
-            TextArea info = new TextArea(null, product.getName().toUpperCase() + "\n" + product.getDescription(), (String) null);
+            TextArea info = new TextArea(null, product.getName().toUpperCase() + "\n" + product.getDescription(),
+                    (String) null);
             info.setWidth("300px");
             info.setReadOnly(true);
 
@@ -94,8 +96,10 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
 
             textFieldScanner = new TextField();
             textFieldScanner.setLabel("Barcode    ");
-            Button controlbutton = new Button("Enter ", buttonClickEvent -> scanLocation(movement, textFieldScanner.getValue()));
-            VerticalLayout contentPalletID = new VerticalLayout(alertbutton, info, layout1, layout2, textFieldScanner, controlbutton);
+            Button controlbutton = new Button("Enter ", buttonClickEvent -> scanLocation(movement,
+                    textFieldScanner.getValue()));
+            VerticalLayout contentPalletID = new VerticalLayout(alertbutton, info, layout1, layout2, textFieldScanner
+                    , controlbutton);
             contentPalletID.setPadding(false);
             contentPalletID.setSpacing(false);
             add(contentPalletID);
@@ -108,7 +112,8 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             textFieldScanner = new TextField();
             textFieldScanner.setLabel("Location ");
 
-            Button button = new Button("Enter", buttonClickEvent -> updatePickinglist(movement, textFieldScanner.getValue()));
+            Button button = new Button("Enter", buttonClickEvent -> updatePickinglist(movement,
+                    textFieldScanner.getValue()));
 
             VerticalLayout contentLocation = new VerticalLayout(textFieldScanner, button);
             contentLocation.setSpacing(true);
@@ -138,7 +143,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
         } catch (NotFoundException e) {
             urlErrorHandler();
-            LOGGER.info("error");
+            LOGGER.warning(e.getMessage());
         }
     }
 
@@ -147,7 +152,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
             UI.getCurrent().navigate("damage/" + movement.getMovementId());
         } catch (NotFoundException e) {
             urlErrorHandler();
-            LOGGER.info("error optreden");
+            LOGGER.warning(e.getMessage());
 
         }
 

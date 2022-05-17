@@ -3,7 +3,6 @@ package com.essers.wms.movement.views;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -15,7 +14,6 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 @Route(value = "", layout = MainView.class)
 @PageTitle("WMS Scanner")
-@CssImport("portal-view.css")
 public final class PortalView extends VerticalLayout {
     public PortalView() {
         Button fp = new Button("FULL PALLETTE", buttonClickEvent -> fullpallete());

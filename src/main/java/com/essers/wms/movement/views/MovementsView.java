@@ -31,7 +31,7 @@ import static com.essers.wms.movement.util.ErrorAlert.urlErrorHandler;
 @Route(value = "movements/:pickinglistID", layout = MainView.class)
 @PageTitle("Movements")
 public final class MovementsView extends VerticalLayout implements BeforeEnterObserver {
-    private static final Logger LOGGER=Logger.getLogger("InfoLogging");
+    private static final Logger LOGGER = Logger.getLogger("InfoLogging");
     private final transient PickingListService pickingListService;
     private final transient MovementService movementService;
 
@@ -52,7 +52,7 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
         try {
             UI.getCurrent().navigate("pickinglist/" + pickinglist.getCompany().getId());
 
-        }  catch (NotFoundException e) {
+        } catch (NotFoundException e) {
             LOGGER.info(e.getMessage());
             urlErrorHandler();
         }
@@ -62,20 +62,25 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
         boolean isNotPicked = true;
         String username = "";
         movement.getInProgressUser();
-        if (movement.getState()==(State.PICKED)) {
+        if (movement.getState() == (State.PICKED)) {
             username = movement.getHandledUser();
             isNotPicked = false;
         }
-        if (movement.getState()==(State.IN_PROCESS)) {
+        if (movement.getState() == (State.IN_PROCESS)) {
             username = movement.getInProgressUser();
             isNotPicked = false;
         }
 
-        TextArea info = new TextArea(null, "Movement" + movement.getMovementId() + "                  " + movement.getState() + "\n" + movement.getMovementType() + "                                       " + username + "\n" + movement.getWmsCompany() + "\n" + movement.getWmsSite() + " - " + movement.getWmsWarehouse(), (String) null);
+        TextArea info = new TextArea(null,
+                "Movement" + movement.getMovementId() + "                  "
+                        + movement.getState() + "\n" + movement.getMovementType() + "                                       "
+                        + username + "\n" + movement.getWmsCompany() + "\n" + movement.getWmsSite() + " - "
+                        + movement.getWmsWarehouse(), (String) null);
         info.setWidth("300px");
         info.setReadOnly(true);
 
-        Button scanButton = new Button("Scan barcode ", VaadinIcon.BARCODE.create(), buttonClickEvent -> routerLink(movement));
+        Button scanButton = new Button("Scan barcode ", VaadinIcon.BARCODE.create(),
+                buttonClickEvent -> routerLink(movement));
         scanButton.setEnabled(isNotPicked);
 
         Icon prodicon = new Icon(VaadinIcon.PACKAGE);
@@ -110,7 +115,7 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
             }
         } catch (Exception e) {
             urlErrorHandler();
-            LOGGER.info(e.getMessage());
+            LOGGER.warning(e.getMessage());
 
         }
     }
@@ -120,7 +125,7 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
             UI.getCurrent().navigate("scanner/" + value.getMovementId());
         } catch (NotFoundException e) {
             urlErrorHandler();
-            LOGGER.info(e.getMessage());
+            LOGGER.warning(e.getMessage());
 
         }
 
