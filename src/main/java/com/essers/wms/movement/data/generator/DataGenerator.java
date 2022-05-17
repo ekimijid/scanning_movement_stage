@@ -40,7 +40,7 @@ import java.util.stream.Stream;
 @SpringComponent
 public class DataGenerator {
     private static final int NUMBER_OF_CYCLES = 40;
-    private static final  Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
     private static final int SEED = 123;
     private static final int RANDOM_GETAL = 9;
     private static final int STOCK = 2;
@@ -134,9 +134,9 @@ public class DataGenerator {
 
             List<Movement> movements = new ArrayList<>();
             List<Stock> stocks = new ArrayList<>();
-            for (int i=0; i<pickinglists.size(); i++ ) {
+            for (int i = 0; i < pickinglists.size(); i++) {
                 Stock s = new Stock();
-                Pickinglist pl=pickinglists.get(i);
+                Pickinglist pl = pickinglists.get(i);
                 s.setLocation(pl.getLocation());
                 s.setQuantity(STOCK);
                 for (Product p : pl.getProduct()) {
@@ -176,5 +176,6 @@ public class DataGenerator {
             stockRepository.saveAll(stocks);
             movementRepository.saveAll(movements);
         };
+
     }
 }

@@ -19,7 +19,19 @@ public class SecurityConfig extends VaadinWebSecurityConfigurerAdapter {
     @Resource(name = "authService")
     private UserDetailsService userDetailsService;
 
+    @Bean
+    public DaoAuthenticationProvider createDaoAuthenticationProvider(BCryptPasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
 
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
@@ -34,16 +46,5 @@ public class SecurityConfig extends VaadinWebSecurityConfigurerAdapter {
         super.configure(web);
     }
 
-   @Bean
-    public DaoAuthenticationProvider createDaoAuthenticationProvider(BCryptPasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        return provider;
-    }
 
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

@@ -1,16 +1,14 @@
 package com.essers.wms.movement.data.entity;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-
+import javax.persistence.Entity;
 import static javax.persistence.FetchType.EAGER;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class User implements Serializable {
@@ -20,17 +18,8 @@ public class User implements Serializable {
     private Long id;
     private String password;
     private String userName;
-
-    public User(String userName, String password, Collection<SimpleGrantedAuthority> authorities) {
-    }
-
-    public User() {
-    }
-
     @OneToMany(fetch = EAGER, mappedBy = "user")
     private Collection<Role> roles = new ArrayList<>();
-
-
 
     public Long getId() {
         return id;
