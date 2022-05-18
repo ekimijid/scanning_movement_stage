@@ -9,7 +9,6 @@ import com.essers.wms.movement.data.entity.Role;
 import com.essers.wms.movement.data.entity.Site;
 import com.essers.wms.movement.data.entity.State;
 import com.essers.wms.movement.data.entity.Stock;
-import com.essers.wms.movement.data.entity.Supplier;
 import com.essers.wms.movement.data.entity.User;
 import com.essers.wms.movement.data.entity.Warehouse;
 import com.essers.wms.movement.data.repository.CompanyRepository;
@@ -72,76 +71,19 @@ public class DataGenerator {
     @Autowired
     private SiteRepository siteRepository;
 
-    private final SecureRandom random = new SecureRandom();
-
-
     @Bean
     public CommandLineRunner loadData() {
         return args -> {
             createUser();
-            ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
-                    LocalDateTime.now());
-            productExampleDataGenerator.setData(Product::setProductId, DataType.EAN13);
-            productExampleDataGenerator.setData(Product::setName, DataType.WORD);
-            productExampleDataGenerator.setData(Product::setLocation, DataType.WORD);
-            productExampleDataGenerator.setData(Product::setDescription, DataType.SENTENCE);
-            List<Product> products = productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES,
-                    SEED));
-
-            ExampleDataGenerator<Company> companyExampleDataGenerator = new ExampleDataGenerator<>(Company.class,
-                    LocalDateTime.now());
-            companyExampleDataGenerator.setData(Company::setName, DataType.COMPANY_NAME);
-            List<Company> companies = companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES,
-                    SEED));
-
+            List<Product> products = createProduct(productRepository);
+            List<Company> companies = createCompany(companyRepository);
             List<Warehouse> warehouses =
                     warehouseRepository.saveAll(Stream.of("WH10", "WH11", "WH12").map(Warehouse::new).toList());
-
             List<Site> sites = siteRepository.saveAll(Stream.of("Winterslag", "Genk").map(Site::new).toList());
-
-            ExampleDataGenerator<Supplier> supplierExampleDataGenerator = new ExampleDataGenerator<>(Supplier.class,
-                    LocalDateTime.now());
-            supplierExampleDataGenerator.setData(Supplier::setName, DataType.WORD);
-            ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class,
-                    LocalDateTime.now());
-            pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_10);
-            pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD);
-            List<Pickinglist> pickinglists = pickinglistGenerator.create(NUMBER_OF_CYCLES, SEED).stream().map(plist -> {
-                plist.setProduct(random.ints(RANDOM_GETAL, 0, products.size()).mapToObj(products::get).toList());
-                plist.setCompany(companies.get(random.nextInt(companyRepository.findAll().size())));
-                plist.setWmsSite(sites.get(random.nextInt(siteRepository.findAll().size())));
-                plist.setWmsWarehouse(warehouses.get(random.nextInt(warehouseRepository.findAll().size())));
-                plist.setLocation("RETARUS123456789");
-                return plist;
-            }).toList();
-
-            List<Movement> movements = new ArrayList<>();
-            List<Stock> stocks = new ArrayList<>();
-            for (int i = 0; i < pickinglists.size(); i++) {
-                Stock s = new Stock();
-                Pickinglist pl = pickinglists.get(i);
-                s.setLocation(pl.getLocation());
-                s.setQuantity(STOCK);
-                for (Product p : pl.getProduct()) {
-                    s.setProductId(p.getproductId());
-                    stocks.add(s);
-                    movements.add(createMovement(pl,p));
-                }
-                pl.setMovements(movements);
-            }
-            for (Movement m : movements) {
-                for (Stock s : stockRepository.findAll()) {
-                    if (m.getProductId().equals(s.getProductId())) {
-                        m.getStock().add(s);
-                    }
-                    movementRepository.save(m);
-                }
-            }
-            pickinglistRepository.saveAll(pickinglists);
-            stockRepository.saveAll(stocks);
-            movementRepository.saveAll(movements);
+            List<Pickinglist> pickinglists = createPickinglist(products, companies, companyRepository, sites,
+                    siteRepository, warehouses, warehouseRepository);
+            createStocks(pickinglists);
         };
-
     }
     private void createUser() {
         List<Role> roles = new ArrayList<>();
@@ -163,7 +105,8 @@ public class DataGenerator {
         user.setRoles(roles);
         userRepository.save(user2);
     }
-    private Movement createMovement(Pickinglist pl, Product p){
+
+    private static Movement createMovement(Pickinglist pl, Product p) {
         Movement movement = new Movement();
         movement.setMovementType(Movementtype.FP);
         movement.setInProgressTimestamp(LocalDateTime.now());
@@ -181,5 +124,69 @@ public class DataGenerator {
         movement.setState(State.PICK);
         movement.setPalleteNummer("03600029145");
         return movement;
+    }
+
+    private static List<Product> createProduct(ProductRepository productRepository) {
+        ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
+                LocalDateTime.now());
+        productExampleDataGenerator.setData(Product::setProductId, DataType.EAN13);
+        productExampleDataGenerator.setData(Product::setName, DataType.WORD);
+        productExampleDataGenerator.setData(Product::setLocation, DataType.WORD);
+        productExampleDataGenerator.setData(Product::setDescription, DataType.SENTENCE);
+        return productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
+    }
+
+    private static List<Company> createCompany(CompanyRepository companyRepository) {
+        ExampleDataGenerator<Company> companyExampleDataGenerator = new ExampleDataGenerator<>(Company.class,
+                LocalDateTime.now());
+        companyExampleDataGenerator.setData(Company::setName, DataType.COMPANY_NAME);
+        return companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
+    }
+
+    private static List<Pickinglist> createPickinglist(List<Product> products,
+                                                      List<Company> companies, CompanyRepository companyRepository,
+                                                      List<Site> sites, SiteRepository siteRepository,
+                                                      List<Warehouse> warehouses,
+                                                      WarehouseRepository warehouseRepository) {
+        SecureRandom random = new SecureRandom();
+        ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class,
+                LocalDateTime.now());
+        pickinglistGenerator.setData(Pickinglist::setQuantity, DataType.NUMBER_UP_TO_10);
+        pickinglistGenerator.setData(Pickinglist::setUom, DataType.WORD);
+        return pickinglistGenerator.create(NUMBER_OF_CYCLES, SEED).stream().map(plist -> {
+            plist.setProduct(random.ints(RANDOM_GETAL, 0, products.size()).mapToObj(products::get).toList());
+            plist.setCompany(companies.get(random.nextInt(companyRepository.findAll().size())));
+            plist.setWmsSite(sites.get(random.nextInt(siteRepository.findAll().size())));
+            plist.setWmsWarehouse(warehouses.get(random.nextInt(warehouseRepository.findAll().size())));
+            plist.setLocation("RETARUS123456789");
+            return plist;
+        }).toList();
+    }
+    private void createStocks(List<Pickinglist>pickinglists){
+        List<Movement> movements = new ArrayList<>();
+        List<Stock> stocks = new ArrayList<>();
+        for (Pickinglist pickinglist : pickinglists) {
+            Stock s = new Stock();
+            Pickinglist pl = pickinglist;
+            s.setLocation(pl.getLocation());
+            s.setQuantity(STOCK);
+            for (Product p : pl.getProduct()) {
+                s.setProductId(p.getproductId());
+                stocks.add(s);
+                movements.add(createMovement(pl, p));
+            }
+            pl.setMovements(movements);
+        }
+        for (Movement m : movements) {
+            for (Stock s : stockRepository.findAll()) {
+                if (m.getProductId().equals(s.getProductId())) {
+                    m.getStock().add(s);
+                }
+                movementRepository.save(m);
+            }
+        }
+        pickinglistRepository.saveAll(pickinglists);
+        stockRepository.saveAll(stocks);
+        movementRepository.saveAll(movements);
     }
 }
