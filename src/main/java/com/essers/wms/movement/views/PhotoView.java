@@ -110,11 +110,9 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
                 saveDamagePicture(pngContent.toByteArray(), product.getName(), product.getproductId(), movement);
                 showImage();
             } catch (IOException e) {
-                String error="Something went wrong with the file upload "+e.getMessage();
-                LOGGER.warning(error);
+                LOGGER.warning("Something went wrong with the file upload "+e.getMessage());
             }
         });
-
         add(upload);
     }
 
@@ -138,8 +136,7 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
         try {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
         } catch (NotFoundException e) {
-            String error=urlErrorHandler()+e.getMessage();
-            LOGGER.warning(error);
+            LOGGER.warning(urlErrorHandler()+e.getMessage());
 
         }
     }
@@ -153,8 +150,7 @@ public final class PhotoView extends VerticalLayout implements BeforeEnterObserv
                 product = productServ.getByID(movement.getProductId());
             }
         } catch (NotFoundException e) {
-            String error=urlErrorHandler()+e.getMessage();
-            LOGGER.warning(error);
+            LOGGER.warning(urlErrorHandler()+e.getMessage());
         }
     }
 }

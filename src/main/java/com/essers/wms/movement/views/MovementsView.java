@@ -117,10 +117,8 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
                     add(getContent(m));
                 }
             }
-        } catch (Exception e) {
-            String error=urlErrorHandler()+e.getMessage();
-            LOGGER.warning(error);
-
+        } catch (NotFoundException e) {
+            LOGGER.warning(urlErrorHandler()+e.getMessage());
         }
     }
 
@@ -128,8 +126,7 @@ public final class MovementsView extends VerticalLayout implements BeforeEnterOb
         try {
             UI.getCurrent().navigate("scanner/" + value.getMovementId());
         } catch (NotFoundException e) {
-            String error=urlErrorHandler()+e.getMessage();
-            LOGGER.warning(error);
+            LOGGER.warning(urlErrorHandler()+e.getMessage());
 
         }
 

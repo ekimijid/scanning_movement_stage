@@ -146,8 +146,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
         try {
             UI.getCurrent().navigate("movements/" + movement.getPickinglist().getPickingListId());
         } catch (NotFoundException e) {
-            String error=urlErrorHandler()+e.getMessage();
-            LOGGER.warning(error);
+            LOGGER.warning(urlErrorHandler()+e.getMessage());
         }
     }
 
@@ -155,8 +154,7 @@ public final class ScannerWMSView extends Div implements BeforeEnterObserver {
         try {
             UI.getCurrent().navigate("damage/" + movement.getMovementId());
         } catch (NotFoundException e) {
-            String error=urlErrorHandler()+e.getMessage();
-            LOGGER.warning(error);
+            LOGGER.warning(urlErrorHandler()+e.getMessage());
 
         }
 
