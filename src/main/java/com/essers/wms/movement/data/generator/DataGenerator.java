@@ -25,8 +25,6 @@ import com.vaadin.exampledata.DataType;
 import com.vaadin.exampledata.ExampleDataGenerator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import java.security.SecureRandom;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +38,6 @@ import java.util.stream.Stream;
 @SpringComponent
 public class DataGenerator {
     private static final int NUMBER_OF_CYCLES = 40;
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataGenerator.class);
     private static final int SEED = 123;
     private static final int RANDOM_GETAL = 9;
     private static final int STOCK = 2;
@@ -81,27 +78,7 @@ public class DataGenerator {
     @Bean
     public CommandLineRunner loadData() {
         return args -> {
-
-            LOGGER.info("Generating demo data");
-
-            List<Role> roles = new ArrayList<>();
-            Role role = new Role();
-            role.setName("Admin");
-            Role role1 = new Role();
-            role.setName("User");
-            roles.add(role);
-            roles.add(role1);
-            roleRepository.saveAll(roles);
-            User user = new User();
-            user.setUserName("eki");
-            user.setPassword(passwordEncoder.encode("user"));
-            user.setRoles(roles);
-            userRepository.save(user);
-            User user2 = new User();
-            user.setUserName("mijenk");
-            user.setPassword(passwordEncoder.encode("user"));
-            user.setRoles(roles);
-            userRepository.save(user2);
+            createUser();
             ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
                     LocalDateTime.now());
             productExampleDataGenerator.setData(Product::setProductId, DataType.EAN13);
@@ -148,27 +125,10 @@ public class DataGenerator {
                 for (Product p : pl.getProduct()) {
                     s.setProductId(p.getproductId());
                     stocks.add(s);
-                    Movement movement = new Movement();
-                    movement.setMovementType(Movementtype.FP);
-                    movement.setInProgressTimestamp(LocalDateTime.now());
-                    movement.setWmsWarehouse(pl.getWmsWarehouse().getName());
-                    movement.setWmsSite(pl.getWmsSite().getName());
-                    movement.setWmsCompany(pl.getCompany().getName());
-                    movement.setPickinglist(pl);
-                    movement.setLocationFrom(p.getLocation());
-                    movement.setLocationTo(pl.getLocation());
-                    movement.setLocation(pl.getLocation());
-                    movement.setQuantity(pl.getQuantity());
-                    movement.setUom(pl.getUom());
-                    movement.setWmsCompany(pl.getCompany().getName());
-                    movement.setProductId(p.getproductId());
-                    movement.setState(State.PICK);
-                    movement.setPalleteNummer("03600029145");
-                    movements.add(movement);
+                    movements.add(createMovement(pl,p));
                 }
                 pl.setMovements(movements);
             }
-
             for (Movement m : movements) {
                 for (Stock s : stockRepository.findAll()) {
                     if (m.getProductId().equals(s.getProductId())) {
@@ -182,5 +142,44 @@ public class DataGenerator {
             movementRepository.saveAll(movements);
         };
 
+    }
+    private void createUser() {
+        List<Role> roles = new ArrayList<>();
+        Role role = new Role();
+        role.setName("Admin");
+        Role role1 = new Role();
+        role.setName("User");
+        roles.add(role);
+        roles.add(role1);
+        roleRepository.saveAll(roles);
+        User user = new User();
+        user.setUserName("eki");
+        user.setPassword(passwordEncoder.encode("user"));
+        user.setRoles(roles);
+        userRepository.save(user);
+        User user2 = new User();
+        user.setUserName("mijenk");
+        user.setPassword(passwordEncoder.encode("user"));
+        user.setRoles(roles);
+        userRepository.save(user2);
+    }
+    private Movement createMovement(Pickinglist pl, Product p){
+        Movement movement = new Movement();
+        movement.setMovementType(Movementtype.FP);
+        movement.setInProgressTimestamp(LocalDateTime.now());
+        movement.setWmsWarehouse(pl.getWmsWarehouse().getName());
+        movement.setWmsSite(pl.getWmsSite().getName());
+        movement.setWmsCompany(pl.getCompany().getName());
+        movement.setPickinglist(pl);
+        movement.setLocationFrom(p.getLocation());
+        movement.setLocationTo(pl.getLocation());
+        movement.setLocation(pl.getLocation());
+        movement.setQuantity(pl.getQuantity());
+        movement.setUom(pl.getUom());
+        movement.setWmsCompany(pl.getCompany().getName());
+        movement.setProductId(p.getproductId());
+        movement.setState(State.PICK);
+        movement.setPalleteNummer("03600029145");
+        return movement;
     }
 }

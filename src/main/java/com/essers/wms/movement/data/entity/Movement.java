@@ -55,16 +55,9 @@ public class Movement implements Serializable {
     public String getSupplierId() {
         return supplierId;
     }
-    public void setSupplierId(String supplierId) {
-        this.supplierId = supplierId;
-    }
 
     public Long getMovementId() {
         return movementId;
-    }
-
-    public void setMovementId(Long movementId) {
-        this.movementId = movementId;
     }
 
     public String getWmsCompany() {
