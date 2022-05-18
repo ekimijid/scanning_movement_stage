@@ -77,14 +77,14 @@ public class DataGenerator {
             createUser();
             List<Product> products = createProduct(productRepository);
             List<Company> companies = createCompany(companyRepository);
-            List<Warehouse> warehouses =
-                    warehouseRepository.saveAll(Stream.of("WH10", "WH11", "WH12").map(Warehouse::new).toList());
+            List<Warehouse> warehouses = creatWarehouse();
             List<Site> sites = siteRepository.saveAll(Stream.of("Winterslag", "Genk").map(Site::new).toList());
             List<Pickinglist> pickinglists = createPickinglist(products, companies, companyRepository, sites,
                     siteRepository, warehouses, warehouseRepository);
             createStocks(pickinglists);
         };
     }
+
     private void createUser() {
         List<Role> roles = new ArrayList<>();
         Role role = new Role();
@@ -143,11 +143,10 @@ public class DataGenerator {
         return companyRepository.saveAll(companyExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
     }
 
-    private static List<Pickinglist> createPickinglist(List<Product> products,
-                                                      List<Company> companies, CompanyRepository companyRepository,
-                                                      List<Site> sites, SiteRepository siteRepository,
-                                                      List<Warehouse> warehouses,
-                                                      WarehouseRepository warehouseRepository) {
+    private static List<Pickinglist> createPickinglist(List<Product> products, List<Company> companies,
+                                                       CompanyRepository companyRepository, List<Site> sites,
+                                                       SiteRepository siteRepository, List<Warehouse> warehouses,
+                                                       WarehouseRepository warehouseRepository) {
         SecureRandom random = new SecureRandom();
         ExampleDataGenerator<Pickinglist> pickinglistGenerator = new ExampleDataGenerator<>(Pickinglist.class,
                 LocalDateTime.now());
@@ -162,7 +161,8 @@ public class DataGenerator {
             return plist;
         }).toList();
     }
-    private void createStocks(List<Pickinglist>pickinglists){
+
+    private void createStocks(List<Pickinglist> pickinglists) {
         List<Movement> movements = new ArrayList<>();
         List<Stock> stocks = new ArrayList<>();
         for (Pickinglist pickinglist : pickinglists) {
@@ -188,5 +188,9 @@ public class DataGenerator {
         pickinglistRepository.saveAll(pickinglists);
         stockRepository.saveAll(stocks);
         movementRepository.saveAll(movements);
+    }
+
+    private List<Warehouse> creatWarehouse() {
+        return warehouseRepository.saveAll(Stream.of("WH10", "WH11", "WH12").map(Warehouse::new).toList());
     }
 }
