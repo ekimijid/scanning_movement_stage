@@ -100,9 +100,9 @@ public class DataGenerator {
         user.setRoles(roles);
         userRepository.save(user);
         User user2 = new User();
-        user.setUserName("mijenk");
-        user.setPassword(passwordEncoder.encode("user"));
-        user.setRoles(roles);
+        user2.setUserName("mijenk");
+        user2.setPassword(passwordEncoder.encode("user"));
+        user2.setRoles(roles);
         userRepository.save(user2);
     }
 
@@ -114,7 +114,7 @@ public class DataGenerator {
         movement.setWmsSite(pl.getWmsSite().getName());
         movement.setWmsCompany(pl.getCompany().getName());
         movement.setPickinglist(pl);
-        movement.setLocationFrom(p.getLocation());
+        movement.setLocationFrom("Floor.col"+RANDOM_GETAL+".row"+STOCK);
         movement.setLocationTo(pl.getLocation());
         movement.setLocation(pl.getLocation());
         movement.setQuantity(pl.getQuantity());
@@ -130,9 +130,9 @@ public class DataGenerator {
         ExampleDataGenerator<Product> productExampleDataGenerator = new ExampleDataGenerator<>(Product.class,
                 LocalDateTime.now());
         productExampleDataGenerator.setData(Product::setProductId, DataType.EAN13);
-        productExampleDataGenerator.setData(Product::setName, DataType.WORD);
-        productExampleDataGenerator.setData(Product::setLocation, DataType.WORD);
-        productExampleDataGenerator.setData(Product::setDescription, DataType.SENTENCE);
+        productExampleDataGenerator.setData(Product::setName, DataType.FOOD_PRODUCT_EAN);
+        productExampleDataGenerator.setData(Product::setLocation, DataType.IBAN);
+        productExampleDataGenerator.setData(Product::setDescription, DataType.FOOD_PRODUCT_NAME);
         return productRepository.saveAll(productExampleDataGenerator.create(NUMBER_OF_CYCLES, SEED));
     }
 
